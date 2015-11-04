@@ -1,0 +1,104 @@
+[[setup]]
+== Kibanaのセットアップ
+すぐにKibanaをセットアップしてElasticsearchのインデックスを探索することができます。
+必要なのはこれだけ:
+
+* Elasticsearch 2.0.0 またはそれ以降
+* モダンなWebブラウザ - http://www.elastic.co/subscriptions/matrix#matrix_browsers[Supported Browsers].
+* Elasticsearchのインストールに関する情報:
+** 接続したいElasticsearchのインスタンスのURL
+** 検索したいElasticsearchのインデックス
+
+NOTE: Elasticsearchが http://www.elastic.co/overview/shield/[Shield] により保護されている場合は、
+{shield}/kibana.html#using-kibana4-with-shield[Shield with Kibana 4] の追加の手順を確認してください。
+
+[float]
+[[install]]
+=== Kibanaのインストールと開始
+
+To get Kibana up and running:
+
+. https://www.elastic.co/downloads/kibana[Kibana 4 binary package] からプラットフォームに応じたファイルをダウンロードします。
+. `.zip` または `tar.gz` のアーカイブファイルを展開します。
+
+// On Unix, you can instead run the package manager suited for your distribution.
+//
+// [float]
+// include::kibana-repositories.asciidoc[]
+//
+インストール後、インストールディレクトリで `bin/kibana` (Linux/MacOSX) または `bin\kibana.bat` (Windows) を実行します。
+
+以上です！ Kibanaは5601番ポートで起動しています。
+
+[float]
+[[kibana-dynamic-mapping]]
+==== KibanaとElasticsearchのDynamic Mapping
+デフォルトでは、Elasticsearchは、フィールドの{ref}dynamic-mapping.html[dynamic mapping] は有効になっています。
+Kibanaでは、正しく可視化をおこなうために、フィールドのDynamic Mappingを利用する必要があります。
+また `.kibana` インデックス(検索条件の保存、可視化、ダッシュボードの格納のために利用するインデックス)を管理するためにも必要です。
+
+もしDynamic Mappingを無効にしてElasticsearchを利用しているのであれば、Kibanaが可視化のために利用するフィールドを、手動でマッピングする必要があります。
+また `.kibana` インデックスのDynamic Mappingを主導で有効にする必要もあります。
+
+以下の手続きを実行する際にはElasticsearchに `.kibana` インデックスがまだ存在せず、 `elasticsearch.yml` の `index.mapper.dynamic` の設定が `false` になっているものとします。
+
+. Elasticsearchを起動します。
+. Dynamic Mappingが有効な `.kibana` インデックスを作成します:
++
+[source,shell]
+PUT .kibana
+{
+	"index.mapper.dynamic": true
+}
++
+. Kibanaを起動し、WebブラウザでKibanaのUIを開き、Dynamic Mappingに関するエラーメッセージが表示されていないことを確認します。
+
+[float]
+[[connect]]
+=== Connect Kibana with Elasticsearch
+Kibanaを利用し始める前に、探索したいElasticsearchのインデックスを教えてあげる必要があります。
+Kibanaに初めてアクセスしたとき、インデックスの名前にマッチする _インデックスパターン_ を1つまたはいくつか定義するように促されます。
+Kibanaを使い始めるのに必要な設定はそれだけです。
+インデックスパターンは <<settings-create-pattern,Settings tab>> から、いつでも追加することができます。
+
+TIP: デフォルトではKibanaは `localhost` で実行されているElasticsearchインスタンスに接続します。
+他のElasticsearchインスタンスに接続する場合は、 `kibana.yml` のElasticsearch URLの設定を書き換えて、Kibanaを再起動します。
+Kibanaをプロダクション環境で利用する場合の情報については <<production>> をご覧ください。
+
+KibanaでアクセスしたいElasticsearchのインデックスを設定する方法:
+
+. WebブラウザでKibanaのUIを開きます。例: `localhost:5601` , `http://YOURDOMAIN.com:5601`
++
+image:images/Start-Page.jpg[Kibana start page]
++
+. Specify an index pattern that matches the name of one or more of your Elasticsearch indices.
+By default, Kibana guesses that you're working with data being fed into Elasticsearch by Logstash.
+If that's the case, you can use the default `logstash-*` as your index pattern.
+The asterisk `(*)` matches zero or more characters in an index's name.
+If your Elasticsearch indices follow some other naming convention, enter an appropriate pattern.
+The "pattern" can also simply be the name of a single index.
+. Select the index field that contains the timestamp that you want to use to perform time-based comparisons.
+Kibana reads the index mapping to list all of the fields that contain a timestamp.
+If your index doesn't have time-based data, disable the *Index contains time-based events* option.
+. If new indices are generated periodically and have a timestamp appended to the name, select the *Use event times to
+create index names* option and select the *Index pattern interval*.
+This improves search performance by enabling Kibana to search only those indices that could contain data in the time range you specify.
+This is primarily applicable if you are using Logstash to feed data into Elasticsearch.
+. Click *Create* to add the index pattern.
+This first pattern is automatically configured as the default.
+When you have more than one index pattern, you can designate which one to use as the default from *Settings > Indices*.
+
+Voila! Kibana is now connected to your Elasticsearch data.
+Kibana displays a read-only list of fields configured for the matching index.
+
+[float]
+[[explore]]
+=== Start Exploring your Data!
+You're ready to dive in to your data:
+
+* Search and browse your data interactively from the <<discover, Discover>> page.
+* Chart and map your data from the <<visualize, Visualize>> page.
+* Create and view custom dashboards from the <<dashboard, Dashboard>> page.
+
+For a brief tutorial that explores these core Kibana concepts, take a look at the <<getting-started, Getting
+Started>> page.

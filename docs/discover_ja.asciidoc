@@ -107,7 +107,7 @@ Discoverページでは、保存した検索条件をリロードすることが
 [float]
 [[auto-refresh]]
 
-include::autorefresh.asciidoc[]
+include::autorefresh_ja.asciidoc[]
 
 [float]
 [[field-filter]]
@@ -139,7 +139,7 @@ include::autorefresh.asciidoc[]
 
 [float]
 [[discover-filters]]
-include::filter-pinning.asciidoc[]
+include::filter-pinning_ja.asciidoc[]
 
 [float]
 [[document-data]]

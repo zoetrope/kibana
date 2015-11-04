@@ -1,0 +1,18 @@
+=== ページの自動更新
+自動的にページを更新する間隔を設定することができます。
+この設定をおこなうと、周期的に最新のインデックスに対して検索クエリを実行します。
+
+更新間隔をセットしたとき、メニューバーのTime Filterの左側にそれが表示されます。
+
+更新間隔の設定方法:
+
+. メニューバーの右上にある *Time Filter* image:images/TimeFilter.jpg[Time Filter] をクリックします。
+. *Refresh Interval* タブをクリックします。
+. 一覧から更新間隔を選択します。
+
+データの自動更新をするためには image:images/autorefresh.png[] *Auto-refresh* ボタンをクリックし、自動更新間隔を選択します:
+
+image:images/autorefresh-intervals.png[]
+
+自動更新が有効なとき、Kibanaのトップバーに *Pause* ボタンと自動更新間隔 image:images/autorefresh-pause.png[] が表示されます。
+*Pause* ボタンをクリックすると、自動更新を停止することができます。

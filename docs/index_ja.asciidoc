@@ -7,7 +7,7 @@
 
 include::introduction_ja.asciidoc[]
 
-include::setup.asciidoc[]
+include::setup_ja.asciidoc[]
 
 include::getting-started.asciidoc[]
 
