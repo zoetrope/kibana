@@ -1,0 +1,134 @@
+[[kibana-plugins]]
+== Kibanaプラグイン
+
+Kibanaの機能を拡張するために、プラグインモジュールが実装されました。
+これらのモジュールを管理するための `bin/kibana plugin` コマンドを利用することができます。
+また、 `installedPlugins` ディレクトリにプラグインのファイルを移動して、新しいファイルの中に展開するすることで、手動でプラグインをインストールすることもできます。
+
+[float]
+=== プラグインのインストール
+
+プラグインをインストールするためには以下のコマンドを使います。
+
+[source,shell]
+bin/kibana plugin --install <org>/<package>/<version>
+
+以下のように `--install` の代わりに `-i` オプションを利用することもできます。
+
+[source,shell]
+bin/kibana plugin -i elasticsearch/marvel-ui/latest
+
+<org>に `elasticsearch` を指定すると、プラグイン管理ツールは自動的に `download.elastic.co` からプラグインをダウンロードします。
+
+[float]
+=== Githubからプラグインのインストール
+
+`download.elastic.co` にプラグインが見つからない場合、プラグイン管理ツールは以下のようにGithubのユーザ名をもとにプラグインをダウンロードします。
+
+[source,shell]
+bin/kibana plugin --install github-user/sample-plugin
+Installing sample-plugin
+Attempting to extract from https://download.elastic.co/github-user/sample-plugin/sample-plugin-latest.tar.gz
+Attempting to extract from https://github.com/github-user/sample-plugin/archive/master.tar.gz
+Downloading <some number> bytes....................
+Extraction complete
+Optimizing and caching browser bundles...
+Plugin installation complete
+
+[float]
+=== 任意のURLを指定してプラグインのインストール
+
+以下のように `-i` または `--install` オプションのあとに `-u` または `--url` を利用すると、プラグインのURLを指定することができます。
+
+[source,shell]
+bin/kibana plugin -i sample-plugin -u https://some.sample.url/directory
+Installing sample-plugin
+Attempting to extract from https://some.sample.url/directory
+Downloading <some number> bytes....................
+Extraction complete
+Optimizing and caching browser bundles...
+Plugin installation complete
+
+URLには、HTTP, HTTPS, または `file` プロトコルを指定することができます。
+
+[float]
+=== 任意のディレクトリを指定してプラグインのインストール
+
+以下のように `-d` または `--plugin-dir` オプションを利用すると、プラグインのインストール先ディレクトリを指定することができます。
+
+[source,shell]
+bin/kibana plugin -i elasticsearch/sample-plugin/latest -d <path/to/directory>
+Installing sample-plugin
+Attempting to extract from https://download.elastic.co/elasticsearch/sample-plugin/sample-plugin-latest.tar.gz
+Downloading <some number> bytes....................
+Extraction complete
+Optimizing and caching browser bundles...
+Plugin installation complete
+
+NOTE: 指定したディレクトリが存在しない場合は、このコマンドによってディレクトリが作成されます。
+
+[float]
+=== プラグインの削除
+
+以下のように `--remove` または `-r` オプションを利用すると、設定情報を含めてプラグインを削除することができます。
+
+[source,shell]
+----
+bin/kibana plugin --remove marvel-ui
+----
+
+また `installedPlugins` ディレクトリにあるプラグインのサブディレクトリを削除することで、手動でプラグインを削除することが可能です。
+
+
+[float]
+=== プラグインの更新
+
+プラグインを更新するためには、現在のバージョンのプラグインを削除し、プラグインを再インストールしてください。
+
+[float]
+=== プラグインマネージャーの設定
+
+デフォルトでは、プラグインマネージャが実行した処理のステータスがフィードバックとして出力されます。
+フィードバックの出力レベルを制御するためには `--quiet` と `--silent` オプションを利用します。
+`--quiet` オプションを利用すると、エラーではない出力が表示されません。
+`--silent` オプションを利用すると、すべての出力が表示されません。
+
+デフォルトでは、プラグインマネージャはタイムアウトしないようになっています。
+以下のように `--timeout` オプションを利用して時間を指定するとこの挙動を変更することができます。
+
+[source,shell]
+.失敗するまで30秒待ちます
+bin/kibana plugin --install username/sample-plugin --timeout 30s
+
+[source,shell]
+.失敗するまで1分待ちます
+bin/kibana plugin --install username/sample-plugin --timeout 1m
+
+[float]
+==== Plugins and Custom Kibana Configurations
+
+`-c` または `--config` オプションを利用すると、Kibanaを起動するときの設定ファイルのパスを指定することができます。
+Kibanaはデフォルトでは `config/kibana.yml` を設定ファイルとして利用します。
+ここで、プラグインのインストールなどの操作をおこなったとき `bin/kibana plugin` コマンドは、Kibanaサーバを再起動します。
+そのため、Kibanaの設定ファイルのパスを変更しているとき、 `bin/kibana plugin` コマンドを実行するたびに、設定ファイルのパスを指定する必要があります。
+
+[float]
+=== プラグインマネージャの実行ステータス
+
+[horizontal]
+0:: Success
+64:: Unknown command or incorrect option parameter
+74:: I/O error
+70:: Other error
+
+[[plugin-switcher]]
+== Switching Plugin Functionality
+
+KibanaのUIは、さまざまな異なるプラグインを含むことのできるフレームワークを提供します。
+The Kibana UI serves as a framework that can contain several different plugins.
+これらのプラグインは、以下のようにインストールされたプラグインのアイコンを表示したボタンをクリックすることで切り替えることができます。
+
+image::images/app-picker.png[]
+
+プラグインの機能を切り替えるときに、プラグインのアイコンをクリックしてください。
+

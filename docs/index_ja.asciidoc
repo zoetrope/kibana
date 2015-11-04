@@ -1,0 +1,28 @@
+[[kibana-guide]]
+= Kibana User Guide
+
+:ref: http://www.elastic.co/guide/en/elasticsearch/reference/2.0/
+:shield: https://www.elastic.co/guide/en/shield/2.0
+:k4issue: https://github.com/elastic/kibana/issues/
+
+include::introduction_ja.asciidoc[]
+
+include::setup.asciidoc[]
+
+include::getting-started.asciidoc[]
+
+include::plugins_ja.asciidoc[]
+
+include::access.asciidoc[]
+
+include::discover_ja.asciidoc[]
+
+include::visualize.asciidoc[]
+
+include::dashboard.asciidoc[]
+
+include::settings.asciidoc[]
+
+include::production.asciidoc[]
+
+include::releasenotes.asciidoc[]
