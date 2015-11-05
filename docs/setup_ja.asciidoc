@@ -71,34 +71,32 @@ KibanaでアクセスしたいElasticsearchのインデックスを設定する�
 +
 image:images/Start-Page.jpg[Kibana start page]
 +
-. Specify an index pattern that matches the name of one or more of your Elasticsearch indices.
-By default, Kibana guesses that you're working with data being fed into Elasticsearch by Logstash.
-If that's the case, you can use the default `logstash-*` as your index pattern.
-The asterisk `(*)` matches zero or more characters in an index's name.
-If your Elasticsearch indices follow some other naming convention, enter an appropriate pattern.
-The "pattern" can also simply be the name of a single index.
-. Select the index field that contains the timestamp that you want to use to perform time-based comparisons.
-Kibana reads the index mapping to list all of the fields that contain a timestamp.
-If your index doesn't have time-based data, disable the *Index contains time-based events* option.
-. If new indices are generated periodically and have a timestamp appended to the name, select the *Use event times to
-create index names* option and select the *Index pattern interval*.
-This improves search performance by enabling Kibana to search only those indices that could contain data in the time range you specify.
-This is primarily applicable if you are using Logstash to feed data into Elasticsearch.
-. Click *Create* to add the index pattern.
-This first pattern is automatically configured as the default.
-When you have more than one index pattern, you can designate which one to use as the default from *Settings > Indices*.
+. Elasticsearchのインデックスにマッチするインデックスパターンを明示します。
+デフォルトでは、KibanaはLogstashによってElasticsearchにデータが投入されたと推測します。
+もしそれが事実なら、デフォルトの `logstash-*` というインデックスパターンが利用できます。
+アスタリスク `(*)` は、ゼロ文字以上の任意の文字列にマッチします。
+もしElasticsearchのインデックスが他の命名規約に従っているのであれば、適切なパターンを入力してください。
+また"pattern"は、単純な一つのインデックス名だけを指定することも可能です。
+. 時間に基づいたデータの比較をおこないたいのであれば、タイムスタンプを含むフィールドを選択してください。
+Kibanaは、タイムスタンプを含むフィールドをすべてリストアップするために、インデックスのマッピングを読み取ります。
+もし、インデックスが時系列データを持たないのであれば、 *Index contains time-based events* オプションを無効にしてください。
+. 新しいインデックスが定期的に作られて、そのインデックス名にタイムスタンプが含まれる場合は *Use event times to create index names* オプションを有効にし *Index pattern interval* を選択してください。
+これは、Kibanaが指定した期間のデータを含むインデックスだけを検索するようになるので、検索性能が改善します。
+Logstashを使ってElasticsearchにデータを入れているのであれば、もっとも適切な設定です。
+. *Create* ボタンをクリックして、インデックスパターンを追加します。
+最初につくったパターンは、自動的にデフォルトとして設定されます。
+複数のインデックスを作った場合は、 *Settings > Indices* から、デフォルトとして利用するインデックスを指定することができます。
 
-Voila! Kibana is now connected to your Elasticsearch data.
-Kibana displays a read-only list of fields configured for the matching index.
+ほら！ Kibanaは今Elasticsearchのデータにつながっています。
+Kibanaは、マッチしたインデックスに設定されたフィールドの一覧(読み取り専用)を表示します
 
 [float]
 [[explore]]
-=== Start Exploring your Data!
-You're ready to dive in to your data:
+=== データを探索し始めよう!
+データに潜る準備はできました:
 
-* Search and browse your data interactively from the <<discover, Discover>> page.
-* Chart and map your data from the <<visualize, Visualize>> page.
-* Create and view custom dashboards from the <<dashboard, Dashboard>> page.
+* <<discover, Discover>> ページでは、対話的にデータの検索や閲覧がおこなえます。
+* <<visualize, Visualize>> ページでは、データからグラフや地図をつくることができます。
+* <<dashboard, Dashboard>> ページでは、カスタマイズしたダッシュボードをつくったり見たりできます。
 
-For a brief tutorial that explores these core Kibana concepts, take a look at the <<getting-started, Getting
-Started>> page.
+Kibanaのコアコンセプトを体験するための簡単なチュートリアルは <<getting-started, Getting Started>> をご覧ください。

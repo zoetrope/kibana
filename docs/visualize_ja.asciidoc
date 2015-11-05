@@ -1,0 +1,150 @@
+[[visualize]]
+== Visualize
+
+データを可視化するために _Visualize_ ページを利用することができます。
+これらの可視化したものは、保存したり、個別に利用したり、 _ダッシュボード_ で組み合わせて利用したりすることができます。
+可視化は、以下のデータソースタイプのいずれかに基づいて作成することができます。
+
+* 対話的に作成する新しい検索条件
+* 保存されている検索条件
+* 保存されている可視化
+
+可視化はElasticsearch 1.xで導入された {ref}search-aggregations.html[aggregation] 機能を利用しています。
+
+[float]
+[[createvis]]
+=== 新しい可視化の作成
+
+新しい可視化ウィザードを開始するには、ページの左上にある *Visualize* タブをクリックします。
+すでに可視化を作っているのであれば、検索バーの右のツールバーから *New Visualization* ボタン image:images/K4NewDocument.png[New Document button] をクリックします。
+このウィザートは、以下の手順であなたを導きます。
+
+[float]
+[[newvis01]]
+==== Step 1: 可視化タイプの選択
+
+新しい可視化ウィザードを開始したら、まず可視化タイプを選択します。
+
+[horizontal]
+<<area-chart,Area chart>>:: 範囲グラフを利用すると、いくつかの異なる系列の合計寄与率を可視化します。
+<<data-table,Data table>>:: データテーブルは、aggregationにより構成された生のデータを表示します。
+可視化の下部をクリックすると、いくつかの他の可視化からデータテーブルを表示することができます。
+<<line-chart,Line chart>>:: 折れ線グラフは、異なる系列のデータを比較します。
+<<markdown-widget,Markdown widget>>:: Markdownウィジェットは、自由な情報やダッシュボードで何らかの指示を表示するために追加います。
+<<metric-chart,Metric>>:: 統計は、ダッシュボードで統計結果の数値を表示するために使います。
+<<pie-chart,Pie chart>>:: 円グラフは、合計値に対してそれぞれのソースの寄与率を表示します。
+<<tilemap,Tile map>>:: タイルマップは、aggregationした結果を、地図上の点に関連付けます。
+<<vertical-bar-chart,Vertical bar chart>>:: 棒グラフは、一般的な目的のグラフとして利用します。
+
+作成して保存した可視化は、ロードすることも可能です。
+*Settings > Edit Saved Objects* にアクセスすると、保存した可視化を管理することができます。
+この画面には名前によって可視化をフィルタリングするためのテキストフィールドと、オブジェクトエディタへのリンクがあります。
+
+新しく作成する可視化がMarkdownウィジェットならば、タイプを選択したあとに、ウィジェットに表示したいテキストを入力するテキストフィールドがあらわれます。
+それ以外のタイプの可視化ならば、タイプを選択したあとに、データソースの選択画面があらわれます。
+
+[float]
+[[newvis02]]
+==== Step 2: データソースの選択
+
+可視化のデータソースとして、新しい検索条件、または、保存した検索条件を選択することができます。
+検索条件は、単一のインデックスまたは複数のインデックスに関連づけられています。
+_new search_ を選択した場合は、ドロップダウンからインデックスパターンを選択して、Visualization Editorに進んでください。
+
+保存した検索条件から可視化をつくる場合は、その検索条件が可視化に結び付けられます。
+可視化に結びついた検索条件を変更した場合、自動的に可視化が更新されます。
+
+[float]
+[[visualization-editor]]
+==== Step 3: The Visualization Editor
+
+The visualization editor enables you to configure and edit visualizations.
+The visualization editor has the following main elements:
+
+1. <<toolbar-panel,Toolbar>>
+2. <<aggregation-builder,Aggregation Builder>>
+3. <<preview-canvas,Preview Canvas>>
+
+image:images/VizEditor.jpg[]
+
+[float]
+[[toolbar-panel]]
+===== Toolbar
+
+The toolbar has a search field for interactive data searches, as well as controls to manage saving and loading visualizations.
+For visualizations based on saved searches, the search bar is grayed out.
+To edit the search, replacing the saved search with the edited version, double-click the search field.
+
+The toolbar at the right of the search box has buttons for creating new visualizations, saving the current
+visualization, loading an existing visualization, sharing or embedding the visualization, and refreshing the data for
+the current visualization.
+
+[float]
+[[aggregation-builder]]
+===== Aggregation Builder
+
+Use the aggregation builder on the left of the page to configure the {ref}search-aggregations-metrics.html[metric] and {ref}search-aggregations-bucket.html[bucket] aggregations used in your
+visualization. Buckets are analogous to SQL `GROUP BY` statements. For more information on aggregations, see the main
+{ref}search-aggregations.html[Elasticsearch aggregations reference].
+
+Bar, line, or area chart visualizations use _metrics_ for the y-axis and _buckets_ are used for the x-axis, segment bar
+colors, and row/column splits. For pie charts, use the metric for the slice size and the bucket for the number of
+slices.
+
+Choose the metric aggregation for your visualization's Y axis, such as
+{ref}search-aggregations-metrics-valuecount-aggregation.html[count],
+{ref}search-aggregations-metrics-avg-aggregation.html[average],
+{ref}search-aggregations-metrics-sum-aggregation.html[sum],
+{ref}search-aggregations-metrics-min-aggregation.html[min],
+{ref}search-aggregations-metrics-max-aggregation.html[max], or
+{ref}search-aggregations-metrics-cardinality-aggregation.html[cardinality]
+(unique count). Use bucket aggregations for the visualization's X axis, color slices, and row/column splits. Common
+bucket aggregations include date histogram, range, terms, filters, and significant terms.
+
+You can set the order in which buckets execute. In Elasticsearch, the first aggregation determines the data set
+for any subsequent aggregations. The following example involves a date bar chart of Web page hits for the top 5 file
+extensions.
+
+To use the same extension across all hits, set this order:
+
+1.  *Color:* Terms aggregation of extensions
+2.  *X-Axis:* Date bar chart of `@timestamp`
+
+Elasticsearch collects the records for the top 5 extensions, then creates a date bar chart for each extension.
+
+To chart the top 5 extensions for each hour, use the following order:
+
+1.  *X-Axis:* Date bar chart of `@timestamp` (with 1 hour interval)
+2.  *Color:* Terms aggregation of extensions
+
+For these requests, Elasticsearch creates a date bar chart from all the records, then groups the top five extensions
+inside each bucket, which in this example is a one-hour interval.
+
+NOTE: Remember, each subsequent bucket slices the data from the previous bucket.
+
+To render the visualization on the _preview canvas_, click the green *Apply Changes* button at the top right of the
+Aggregation Builder.
+
+
+[float]
+[[preview-canvas]]
+===== Preview Canvas
+
+The preview canvas displays a preview of the visualization you've defined in the aggregation builder. To refresh the
+visualization preview, clicking the *Refresh* button image:images/K4Refresh.png[Refresh button] on the toolbar.
+
+include::area.asciidoc[]
+
+include::datatable.asciidoc[]
+
+include::line.asciidoc[]
+
+include::markdown.asciidoc[]
+
+include::metric.asciidoc[]
+
+include::pie.asciidoc[]
+
+include::tilemap.asciidoc[]
+
+include::vertbar.asciidoc[]

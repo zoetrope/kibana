@@ -17,7 +17,7 @@ include::access.asciidoc[]
 
 include::discover_ja.asciidoc[]
 
-include::visualize.asciidoc[]
+include::visualize_ja.asciidoc[]
 
 include::dashboard.asciidoc[]
 
