@@ -135,7 +135,7 @@ visualization preview, clicking the *Refresh* button image:images/K4Refresh.png[
 
 include::area_ja.asciidoc[]
 
-include::datatable.asciidoc[]
+include::datatable_ja.asciidoc[]
 
 include::line.asciidoc[]
 

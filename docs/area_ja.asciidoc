@@ -25,41 +25,42 @@
 *+ Add Aggregation* ボタンをクリックすると、aggregationを追加することができます。
 
 include::x-axis-aggs_ja.asciidoc[]
-For example, a chart of dates with incident counts can display dates in chronological order, or you can raise the priority of the incident-reporting aggregation to show the most active dates first.
-The chronological order might show a time-dependent pattern in incident count, and sorting by active dates can reveal particular outliers in your data.
+たとえば、日付ごとの問題の発生数のグラフを年代順に表示することができます。
+また、もっともアクティブな日付を最初に表示するために、問題報告のaggregationの優先度を上げることができます。
+年代順に並び替えることで、問題の発生数が時間に依存しているというパターンを示すかもしれません。
+そして、アクティブな日付順で並び替えることで、データの異常値が見えるようになるかもしれません。
 
-You can click the *Advanced* link to display more customization options for your metrics or bucket aggregation:
+*Advanced* リンクをクリックすると、metricやbucket aggregationのより詳細なオプションを表示することができます。
 
-*Exclude Pattern*:: Specify a pattern in this field to exclude from the results.
-*Exclude Pattern Flags*:: A standard set of Java flags for the exclusion pattern.
-*Include Pattern*:: Specify a pattern in this field to include in the results.
-*Include Pattern Flags*:: A standard set of Java flags for the inclusion pattern.
-*JSON Input*:: A text field where you can add specific JSON-formatted properties to merge with the aggregation definition, as in the following example:
+*Exclude Pattern*:: 結果からこのフィールドを除外するためのパターンを指定します。
+*Exclude Pattern Flags*:: Exclude Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*Include Pattern*:: 結果にこのフィールドを含めるためのパターンを指定します。
+*Include Pattern Flags*:: Include Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*JSON Input*:: aggregationの定義にマージするJSON形式のプロパティを追加できるテキストフィールドです。以下に例を示します:
 
 [source,shell]
 { "script" : "doc['grade'].value * 1.2" }
 
-NOTE: In Elasticsearch releases 1.4.3 and later, this functionality requires you to enable 
-{ref}/modules-scripting.html[dynamic Groovy scripting].
+NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するためには {ref}/modules-scripting.html[dynamic Groovy scripting] を有効にする必要があります。
 
-The availability of these options varies depending on the aggregation you choose.
+上記のオプションが利用できるかどうかは、選択したaggregationによって変化します。
 
-Select the *Options* tab to change the following aspects of the chart:
+*Options* タブを選択すると、グラフの以下の性質を変更することができます:
 
-*Chart Mode*:: When you have multiple Y-axis aggregations defined for your chart, you can use this drop-down to affect how the aggregations display on the chart:
+*Chart Mode*:: 複数のY軸のaggregationを定義している場合、グラフ上でどのようにaggregationを表示するかを以下から選択することができます:
 
-_stacked_:: Stacks the aggregations on top of each other.
-_overlap_:: The aggregations overlap, with translucency indicating areas of overlap.
-_wiggle_:: Displays the aggregations as a https://en.wikipedia.org/wiki/Streamgraph[streamgraph].
-_percentage_:: Displays each aggregation as a proportion of the total.
-_silhouette_:: Displays each aggregation as variance from a central line.
+_stacked_:: それぞれのaggregationを上に積みあげます。
+_overlap_:: aggregationを重ね合わせ、重なった領域は半透明で示します。
+_wiggle_:: https://en.wikipedia.org/wiki/Streamgraph[streamgraph] としてaggregationを表示します。
+_percentage_:: それぞれのaggregationを合計の割合として表示します。
+_silhouette_:: それぞれのaggregationを中央線からの偏差として表示します。
 
-Checkboxes are available to enable and disable the following behaviors:
+チェックボックスで以下の振る舞いの有効・無効を切り替えることができます:
 
-*Smooth Lines*:: Check this box to curve the top boundary of the area from point to point.
-*Set Y-Axis Extents*:: Check this box and enter values in the *y-max* and *y-min* fields to set the Y axis to specific 
-values. 
-*Scale Y-Axis to Data Bounds*:: The default Y axis bounds are zero and the maximum value returned in the data.
-Check this box to change both upper and lower bounds to match the values returned in the data.
-*Show Tooltip*:: Check this box to enable the display of tooltips.
-*Show Legend*:: Check this box to enable the display of a legend next to the chart.
+*Smooth Lines*:: チェックすると、点と点を結んだときの領域の頂点を滑らかにします。
+*Set Y-Axis Extents*:: チェックを入れて、 *y-max* と *y-min* フィールドに値を入力すると、Y軸の最大値・最小値を設定できます。
+*Scale Y-Axis to Data Bounds*:: デフォルトでは、Y軸の範囲は0からデータの最大値になっています。
+チェックを入れると、下限と上限の両方の範囲が、データの値にマッチするようになります。
+*Show Tooltip*:: チェックを入れるとツールチップを表示します。
+*Show Legend*:: チェックを入れると、グラフの近くに凡例を表示します。
+
