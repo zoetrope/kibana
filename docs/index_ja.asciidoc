@@ -13,7 +13,7 @@ include::getting-started_ja.asciidoc[]
 
 include::plugins_ja.asciidoc[]
 
-include::access.asciidoc[]
+include::access_ja.asciidoc[]
 
 include::discover_ja.asciidoc[]
 
