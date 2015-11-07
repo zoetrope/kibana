@@ -1,37 +1,37 @@
 [[getting-started]]
-== Getting Started with Kibana
+== Kibanaを始めてみよう
 
-Now that you have Kibana <<setup,installed>>, you can step through this tutorial to get fast hands-on experience with 
-key Kibana functionality. By the end of this tutorial, you will have:
+Kibanaの<<setup,インストール>>が完了したら、このチュートリアルを通して、Kibanaの主要な機能の最初のハンズオンを経験することができます。
+このチュートリアルを終えたときには、次のことができているでしょう。
 
-* Loaded a sample data set into your Elasticsearch installation
-* Defined at least one index pattern
-* Use the <<discover, Discover>> functionality to explore your data
-* Set up some <<visualize,_visualizations_>> to graphically represent your data
-* Assembled visualizations into a <<dashboard,Dashboard>>
+* Elasticsearchにサンプルのデータを読み込む。
+* 少なくとも1つのインデックスパターンを定義する。
+* <<discover, Discover>>機能を使って、データを探索する。
+* データをグラフィカルに表現するためのいくつかの <<visualize,_可視化_>> をセットアップする。
+* <<dashboard,Dashboard>>で可視化を組み立てる。
 
-The material in this section assumes you have a working Kibana install connected to a working Elasticsearch install.
+なお、本セクションの内容は、KibanaとElasticsearchがインストールされて動いているものとします。
 
 [float]
 [[tutorial-load-dataset]]
-=== Before You Start: Loading Sample Data
+=== 始める前に: サンプルデータの読み込み
 
-The tutorials in this section rely on the following data sets:
+本セクションのチュートリアルでは、以下のデータを利用します:
 
-* The complete works of William Shakespeare, suitably parsed into fields. Download this data set by clicking here: 
+* 適切なフィールドごとにパースされた、ウィリアム・シェイクスピア全集。このデータはここをクリックしてダウンロードしてください:
   https://www.elastic.co/guide/en/kibana/3.0/snippets/shakespeare.json[shakespeare.json].
-* A set of fictitious accounts with randomly generated data. Download this data set by clicking here: 
+* ランダムに生成された架空の口座データ。このデータはここをクリックしてダウンロードしてください:
   https://github.com/bly2k/files/blob/master/accounts.zip?raw=true[accounts.zip]
-* A set of randomly generated log files. Download this data set by clicking here: 
+* ランダムに生成されたlogstashのデータ。このデータはここをクリックしてダウンロードしてください:
   https://download.elastic.co/demos/kibana/gettingstarted/logs.jsonl.gz[logstash.jsonl.gz]
 
-Two of the data sets are compressed. Use the following commands to extract the files:
+データのうち2つは圧縮されています。以下のコマンドを使ってファイルを展開してください:
 
 [source,shell]
 unzip accounts.zip
 gunzip logs.jsonl.gz
 
-The Shakespeare data set is organized in the following schema:
+シェイクスピアのデータは、以下のスキーマに従います:
 
 [source,json]
 {
@@ -43,7 +43,7 @@ The Shakespeare data set is organized in the following schema:
     "text_entry": "String",
 }
 
-The accounts data set is organized in the following schema:
+口座のデータは、以下のスキーマに従います:
 
 [source,json]
 {
@@ -60,7 +60,7 @@ The accounts data set is organized in the following schema:
     "state": "String"
 }
 
-The schema for the logs data set has dozens of different fields, but the notable ones used in this tutorial are:
+logstashのデータのスキーマは異なるたくさんのフィールドを持ちますが、このチュートリアルで利用する主要なものは以下の通りです:
 
 [source,json]
 {
@@ -69,11 +69,10 @@ The schema for the logs data set has dozens of different fields, but the notable
     "@timestamp": "date"
 }
 
-Before we load the Shakespeare data set, we need to set up a {ref}/mapping.html[_mapping_] for the fields. Mapping 
-divides the documents in the index into logical groups and specifies a field's characteristics, such as the field's
-searchability or whether or not it's _tokenized_, or broken up into separate words.
+シェイクスピアのデータを投入する前に、フィールドに {ref}/mapping.html[_マッピング_] を設定する必要があります。
+マッピングは、インデックスを論理的なグループにドキュメントを分割し、フィールドの特徴を明示します。例えばフィールドの検索性を表す特徴として、 _トークナイズ_ するかどうか、すなわち単語ごとに分割されるかどうかを指定することができます。
 
-Use the following command to set up a mapping for the Shakespeare data set:
+シェイクスピアのデータに、以下のコマンドでマッピングを設定します:
 
 [source,shell]
 curl -XPUT http://localhost:9200/shakespeare -d '
@@ -91,29 +90,28 @@ curl -XPUT http://localhost:9200/shakespeare -d '
 }
 ';
 
-This mapping specifies the following qualities for the data set:
+このマッピングは、データに対して以下の性質を指定しています:
 
-* The _speaker_ field is a string that isn't analyzed. The string in this field is treated as a single unit, even if
-there are multiple words in the field.
-* The same applies to the _play_name_ field.
-* The line_id and speech_number fields are integers.
+* _speaker_ フィールドは、解析されない文字列です。このフィールドの文字列は、複数の単語で構成されていたとしても、1つの文字列のかたまりとして扱われます。
+* _play_name_ フィールドも同じです。
+* line_id と speech_number フィールドは整数値になります。
 
-The accounts and logstash data sets don't require any mappings, so at this point we're ready to load the data sets into 
-Elasticsearch with the following commands:
+口座データとlogstashのデータは、特定のマッピングを必要としません。
+これで、以下のコマンドでElasticsearchにデータを投入する準備ができました:
 
 [source,shell]
 curl -XPOST 'localhost:9200/bank/_bulk?pretty' --data-binary @accounts.json
 curl -XPOST 'localhost:9200/shakespeare/_bulk?pretty' --data-binary @shakespeare.json
 curl -XPOST 'localhost:9200/_bulk?pretty' --data-binary @logstash.json
 
-These commands may take some time to execute, depending on the computing resources available.
+これらのコマンドは、環境によっては実行するのに少し時間がかかるでしょう。
 
-Verify successful loading with the following command:
+以下のコマンドで、データの投入の成功を確認しましょう:
 
 [source,shell]
 curl 'localhost:9200/_cat/indices?v'
 
-You should see output similar to the following:
+以下のような出力が得られるでしょう:
 
 [source,shell]
 health status index               pri rep docs.count docs.deleted store.size pri.store.size
@@ -124,79 +122,82 @@ yellow open   logstash-2015.05.19   5   1       4624            0     15.7mb    
 yellow open   logstash-2015.05.20   5   1       4750            0     16.4mb         16.4mb
 
 [[tutorial-define-index]]
-=== Defining Your Index Patterns
+=== インデックスパターンの定義
 
-Each set of data loaded to Elasticsearch has an https://www.elastic.co/guide/en/kibana/current/settings.html#settings-create-pattern[index pattern]. In the previous section, the Shakespeare data set has an index named `shakespeare`, and the accounts 
-data set has an index named `bank`. An _index pattern_ is a string with optional wildcards that can match multiple 
-indices. For example, in the common logging use case, a typical index name contains the date in MM-DD-YYYY 
-format, and an index pattern for May would look something like `logstash-2015.05*`.
+Elasticsearchにロードされたデータはそれぞれ https://www.elastic.co/guide/en/kibana/current/settings.html#settings-create-pattern[インデックスパターン] を持ちます。
+Each set of data loaded to Elasticsearch has an https://www.elastic.co/guide/en/kibana/current/settings.html#settings-create-pattern[index pattern].
+前のセクションで、シェイクスピアのデータは `shakespeare` という名前のインデックスを、口座データは `bank` という名前のインデックスを持っています。
+In the previous section, the Shakespeare data set has an index named `shakespeare`, and the accounts data set has an index named `bank`.
+_インデックスパターン_ は、複数のインデックスにマッチすることのできるワイルドカードを利用することもできます。
+An _index pattern_ is a string with optional wildcards that can match multiple indices.
+たとえば、よくあるログのユースケースにおいて、典型的なインデックス名はYYYY.MM.DDというフォーマットの日付を含み、5月のインデックスパターンであれば `logstash-2015.05*` のようになります。
 
-For this tutorial, any pattern that matches either of the two indices we've loaded will work. Open a browser and 
-navigate to `localhost:5601`. Click the *Settings* tab, then the *Indices* tab. Click *Add New* to define a new index 
-pattern. Since these data sets don't contain time-series data, make sure the *Index contains time-based events* box is 
-unchecked. Specify `shakes*`  as the index pattern for the Shakespeare data set and click *Create* to define the index 
-pattern, then define a second index pattern named `ba*`.
+本チュートリアルは、先ほど登録した2つのインデックスのどちらにマッチするインデックスパターンでも動きます。
+まず、ブラウザを開き `localhost:5601` に移動してください。
+*Settings* タブの *Indices* タブをクリックします。
+新しいインデックスパターンを定義するために *Add New* をクリックします。
+今回のデータは時系列のデータを含まないため *Index contains time-based events* のチェックが外れていることを確認してください。
+シェイクスピアのデータのインデックスパターンとして `shakes*` を指定し、 *Create* をクリックしてインデックスパターンを定義します。つづいて `ba*` という名前のインデックスパターンを定義します。
 
 [float]
 [[tutorial-discovering]]
-=== Discovering Your Data
+=== データの発見
 
-Click the *Discover* tab to display Kibana's data discovery functions:
+Kibanaのデータ発見機能を見るために *Discover* タブをクリックしてください:
 
 image::images/tutorial-discover.png[]
 
-Right under the tab itself, there is a search box where you can search your data. Searches take a specific 
-{ref}/query-dsl-query-string-query.html#query-string-syntax[query syntax] that enable you to create custom searches, 
-which you can save and load by clicking the buttons to the right of the search box.
+そのタブのすぐ下に、データを検索するための検索ボックスがあります。
+検索には、いろいろな検索条件を作ることのできる {ref}/query-dsl-query-string-query.html#query-string-syntax[query syntax] を使います。
+また、検索ボックスの右のボタンをクリックすることで、それらの検索条件を保存したりロードしたりすることができます。
 
-Beneath the search box, the current index pattern is displayed in a drop-down. You can change the index pattern by 
-selecting a different pattern from the drop-down selector.
+検索ボックスの下には、現在のインデックスパターンがドロップダウンで表示されます。
+ドロップダウンから他のパターンを選択することで、インデックスパターンを切り替えることができます。
 
-You can construct searches by using the field names and the values you're interested in. With numeric fields you can 
-use comparison operators such as greater than (>), less than (<), or equals (=). You can link elements with the
-logical operators AND, OR, and NOT, all in uppercase.
+あなたが興味のあるフィールド名とその値を使って、検索条件を組み立てることができます。
+数値フィールドであれば、以上(>)、以下(<)、等しい(=)などの比較演算子を利用することができます。
+さらに、AND, OR, NOTなどの論理演算子(すべて大文字)を使って、検索条件を組み合わせることができます。
 
-Try selecting the `ba*` index pattern and putting the following search into the search box:
+`ba*` のインデックスパターンを選択して、次の検索条件を検索ボックスに入力してみましょう。
 
 [source,text]
 account_number:<100 AND balance:>47500
 
-This search returns all account numbers between zero and 99 with balances in excess of 47,500.
+この検索では、口座番号が0から99の間で、残高が47,500以上のすべての口座を返します。
 
-If you're using the linked sample data set, this search returns 5 results: Account numbers 8, 32, 78, 85, and 97.
+もし、前セクションのサンプルデータを利用しているのであれば、この検索は口座番号が8, 32, 78, 85, 97の5つの結果を返します。
 
 image::images/tutorial-discover-2.png[]
 
-To narrow the display to only the specific fields of interest, highlight each field in the list that displays under the 
-index pattern and click the *Add* button. Note how, in this example, adding the `account_number` field changes the 
-display from the full text of five records to a simple list of five account numbers:
+興味のある特定のフィールドだけを表示したい場合は、インデックスパターンの下に表示されているフィールドにマウスオーバーし、 *Add* ボタンをクリックします。
+この例では、 `account_number` フィールドを追加することで、5つのレコードのすべてのテキストが表示されていたものが、5つの口座番号のみが表示されるようになりました:
 
 image::images/tutorial-discover-3.png[]
 
 [[tutorial-visualizing]]
-=== Data Visualization: Beyond Discovery
+=== 可視化: 発見の向こう側
 
-The visualization tools available on the *Visualize* tab enable you to display aspects of your data sets in several 
-different ways. 
+*Visualize* タブから利用できる可視化ツールは、様々な異なる方法でデータのある側面を表示することを可能にします。
 
-Click on the *Visualize* tab to start:
+開始するためには *Visualize* タブをクリックします:
 
 image::images/tutorial-visualize.png[]
 
-Click on *Pie chart*, then *From a new search*. Select the `ba*` index pattern. 
 
-Visualizations depend on Elasticsearch {ref}/search-aggregations.html[aggregations] in two different types: _bucket_ 
-aggregations and _metric_ aggregations. A bucket aggregation sorts your data according to criteria you specify. For 
-example, in our accounts data set, we can establish a range of account balances, then display what proportions of the 
-total fall into which range of balances.
+*Pie chart* をクリックし、つづいて *From a new search* をクリックします。
+そして `ba*` インデックスパターンを選択してください。
 
-The whole pie displays, since we  haven't specified any buckets yet.
+Kibanaの可視化では _bucket_ aggregations と _metric_ aggregations というElasticsearchにおける2つの異なるタイプの {ref}/search-aggregations.html[aggregations] を利用しています。
+bucket aggregationは、指定した条件に応じてデータの並び替えをおこないます。
+たとえば、口座データでは、口座残高の範囲を決めて、その範囲で分類される合計金額がどれくらいの割合なのかを表示することができます。
+
+以下のような全体の円グラフでは、いずれのbucketもまだ指定されていません。
 
 image::images/tutorial-visualize-pie-1.png[]
 
-Select *Split Slices* from the *Select buckets type* list, then select *Range* from the *Aggregation* drop-down 
-selector. Select the *balance* field from the *Field* drop-down, then click on *Add Range* four times to bring the 
-total number of ranges to six. Enter the following ranges:
+*Select buckets type* の一覧から *Split Slices* を選択し、 *Aggregation* のドロップダウンから *Range* を選択します。
+*Field* ドロップダウンから *balance* フィールドを選択し、 *Add Range* を4回クリックして数値の範囲を6つにします。
+そして、以下の範囲を入力してください:
 
 [source,text]
 0            1000
@@ -206,121 +207,124 @@ total number of ranges to six. Enter the following ranges:
 15000       31000
 31000       50000
 
-Click the green *Apply changes* to display the chart:
+緑色の *Apply changes* をクリックすると、以下のグラフが表示されます:
 
 image::images/tutorial-visualize-pie-2.png[]
 
-This shows you what proportion of the 1000 accounts fall in these balance ranges. To see another dimension of the data, 
-we're going to add another bucket aggregation. We can break down each of the balance ranges further by the account 
-holder's age.
+このグラフは、残高の範囲で分類される1000の口座の割合を示しています。
+データのもう1つの性質を見たい場合は、buccket aggregationを追加します。
+それぞれの残高の範囲を、さらに口座主の年齢でブレイクダウンしてみましょう。
 
-Click *Add sub-buckets* at the bottom, then select the *Terms* aggregation and the *age* field from the drop-downs. 
-Click the green *Apply changes* button to add an external ring with the new results.
+一番下にある *Add sub-buckets* をクリックし、 *Terms* aggregation を選択し、ドロップダウンから *age* フィールドを選択します。
+緑色の *Apply changes* ボタンをクリックすると、新しい結果として外側の輪が追加されます。
 
 image::images/tutorial-visualize-pie-3.png[]
 
-Save this chart by clicking the *Save Visualization* button to the right of the search field. Name the visualization
-_Pie Example_.
+検索フィールドの右側にある *Save Visualization* ボタンをクリックして、このグラフを保存しましょう。可視化の名前は _Pie Example_ とします。
 
-Next, we're going to make a bar chart. Click on *New Visualization*, then *Vertical bar chart*. Select *From a new 
-search* and the `shakes*` index pattern. You'll see a single big bar, since we haven't defined any buckets yet:
+次に棒グラフをつくりましょう。
+*New Visualization* をクリックし、 *Vertical bar chart* を選択します。
+*From a new search* を選択し、 `shakes*` インデックスパターンを選びます。
+この時点では、まだbucketを定義していないので、大きな1本の棒が表示されているだけでしょう。
 
 image::images/tutorial-visualize-bar-1.png[]
 
-For the Y-axis metrics aggregation, select *Unique Count*, with *speaker* as the field. For Shakespeare plays, it might 
-be useful to know which plays have the lowest number of distinct speaking parts, if your theater company is short on 
-actors. For the X-Axis buckets, select the *Terms* aggregation with the *play_name* field. For the *Order*, select
-*Bottom*, leaving the *Size* at 5.
+Y軸のmetric aggregationとして、 *Unique Count* を選択し、フィールドには *speaker* を指定します。
+もしあなたの映画会社の俳優が足りていないのであれば、シェイクスピアの脚本において、どの脚本がもっともセリフのある役が少ないのかを知って役立てることができるかもしれません。
+X軸のbucketには、 *Terms* を選択し、フィールドに *play_name* を指定します。
+*Order* は *Bottom* を選択し *Size* は5のままにします。
 
-Leave the other elements at their default values and click the green *Apply changes* button. Your chart should now look 
-like this:
+他の要素はデフォルトのままとし、緑色の *Apply changes* ボタンをクリックしてください。
+グラフは以下のようになるでしょう:
 
 image::images/tutorial-visualize-bar-2.png[]
 
-Notice how the individual play names show up as whole phrases, instead of being broken down into individual words. This 
-is the result of the mapping we did at the beginning of the tutorial, when we marked the *play_name* field as 'not 
-analyzed'.
+個々の脚本の名前が、バラバラにされた個別の単語ではなく、全フレーズが表示されていることに気づくでしょう。
+これは、チュートリアルの最初に *play_name* フィールドに `not analyzed' というマークを付けたマッピングの結果です。
 
-Hovering on each bar shows you the number of speaking parts for each play as a tooltip. You can turn this behavior off, 
-as well as change many other options for your visualizations, by clicking the *Options* tab in the top left.
+それぞれのバーにマウスオーバーすると、それぞれの脚本におけるセリフの役のある数がツールチップで表示されます。
+Hovering on each bar shows you the number of speaking parts for each play as a tooltip.
+左上にある *Options* をクリックして、この挙動を向こうにすることができます。他にもたくさんのオプションを変更することができます。
 
-Now that you have a list of the smallest casts for Shakespeare plays, you might also be curious to see which of these 
-plays makes the greatest demands on an individual actor by showing the maximum number of speeches for a given part. Add 
-a Y-axis aggregation with the *Add metrics* button, then choose the *Max* aggregation for the *speech_number* field. In 
-the *Options* tab, change the *Bar Mode* drop-down to *grouped*, then click the green *Apply changes* button. Your 
-chart should now look like this:
+今や、シェイクスピアの脚本から、もっともキャストが少ない一覧を持っています。
+あなたはこれらの脚本において、役のセリフの最大数を示して、個々の俳優へのもっとも高い要求を知ることに興味があるかもしれません。
+*Add metrics* ボタンからY軸のaggregationを追加し、 *Max* aggregationを選択して、フィールドには *speec_number* を指定します。
+*Options* タブで、 *Bar Mode* のドロップダウンを *grouped* に変更し、緑色の *Apply changes* ボタンをクリックします。
+グラフは以下のように表示されます:
 
 image::images/tutorial-visualize-bar-3.png[]
 
-As you can see, _Love's Labours Lost_ has an unusually high maximum speech number, compared to the other plays, and 
-might therefore make more demands on an actor's memory.
+このグラフを見ると _Love's Labours Lost_ が、他の脚本と比較して、普通ではないセリフの最大数を持っていることが分かります。
+そしてそれ故に、俳優の記憶力により頼らなければならないことが分かります。
 
-Save this chart with the name _Bar Example_.
+このグラフを _Bar Example_ という名前で保存しておきましょう。
 
-Next, we're going to make a tile map chart to visualize some geographic data. Click on *New Visualization*, then 
-*Tile map*. Select *From a new search* and the `logstash-*` index pattern. Define the time window for the events we're 
-exploring by clicking the time selector at the top right of the Kibana interface. Click on *Absolute*, then set the 
-end time for the range to May 20, 2015 and the start time to May 18, 2015:
+続いて、地理的なデータを可視化するためのタイルマップをつくってみましょう。
+*New Visualization* をクリックし *Tile map* を選択します。
+*From a new search* を選択し `logstash-*` インデックスパターンを指定します。
+Kibanaインタフェースの右上にある時間のセレクタをクリックし、探索するイベントの時間の範囲を定義します。
+*Absolute* をクリックし、終了日時を2015年5月20日に、開始日時を2015年5月18日に設定します。
 
 image::images/tutorial-timepicker.png[]
 
-Once you've got the time range set up, click the *Go* button, then close the time picker by clicking the small up arrow 
-at the bottom. You'll see a map of the world, since we haven't defined any buckets yet:
+時間の範囲を設定したら *Go* ボタンをクリックし、下にある小さな上向きの矢印をクリックしタイムピッカーを閉じます。
+まだ何もbucketを定義していないので、以下のような世界地図が表示されます:
 
 image::images/tutorial-visualize-map-1.png[]
 
-Select *Geo Coordinates* as the bucket, then click the green *Apply changes* button. Your chart should now look like 
-this:
+bucketとして、 *Geo Coordinates* を選択し、 緑色の *Apply changes* ボタンをクリックしてください。
+次のような図が表示されるでしょう:
 
 image::images/tutorial-visualize-map-2.png[]
 
-You can navigate the map by clicking and dragging, zoom with the image:images/viz-zoom.png[] buttons, or hit the *Fit 
-Data Bounds* image:images/viz-fit-bounds.png[] button to zoom to the lowest level that includes all the points. You can 
-also create a filter to define a rectangle on the map, either to include or exclude, by clicking the 
-*Latitude/Longitude Filter* image:images/viz-lat-long-filter.png[] button and drawing a bounding box on the map. 
-A green oval with the filter definition displays right under the query box:
+クリックやドラッグをおこなうことで、地図の操作をおこなうことができます。
+image:images/viz-zoom.png[] のズームボタンか、 *Fit Data Bounds* image:images/viz-fit-bounds.png[] を利用することで、すべての点が含まれるもっとも広いレベルにズームすることができます。
+また *Latitude/Longitude Filter* image:images/viz-lat-long-filter.png[] ボタンをクリックして、地図上で四角形を範囲を選択することで、その範囲を含むまたは含まないという条件を指定することのできるフィルターをつくることができます。
+検索ボックスのすぐ下にある緑色の楕円形が、そのフィルタの定義を表示しています。
 
 image::images/tutorial-visualize-map-3.png[]
 
-Hover on the filter to display the controls to toggle, pin, invert, or delete the filter. Save this chart with the name 
-_Map Example_.
+フィルター上にマウスオーバーすると、フィルタのトグル、ピン止め、反転、削除などをおこなうためのコントロールが表示されます。
+この図を _Map Example_ という名前で保存しましょう。
 
-Finally, we're going to define a sample Markdown widget to display on our dashboard. Click on *New Visualization*, then 
-*Markdown widget*, to display a very simple Markdown entry field:
+最後に、ダッシュボードに表示するためのMarkdownウィジェットのサンプルを定義します。
+*New Visualization* をクリックし *Markdown widget* を選択すると、とてもシンプルなMarkdownの入力フィールドが表示されます:
 
 image::images/tutorial-visualize-md-1.png[]
 
-Write the following text in the field:
+以下のテキストをフィールドに記述しましょう:
 
 [source,markdown]
 # This is a tutorial dashboard! 
 The Markdown widget uses **markdown** syntax.
 > Blockquotes in Markdown use the > character.
 
-Click the green *Apply changes* button to display the rendered Markdown in the preview pane:
+緑色の *Apply chagens* ボタンをクリックすると、プレビュー領域に描画されたMarkdownが表示されます:
 
 image::images/tutorial-visualize-md-2.png[]
 
-Save this visualization with the name _Markdown Example_.
+この可視化を _Markdown Example_ という名前で保存します。
 
 [[tutorial-dashboard]]
-=== Putting it all Together with Dashboards
+=== ダッシュボードに全部一緒に配置しよう
 
-A Kibana dashboard is a collection of visualizations that you can arrange and share. To get started, click the 
-*Dashboard* tab, then the *Add Visualization* button at the far right of the search box to display the list of saved 
-visualizations. Select _Markdown Example_, _Pie Example_, _Bar Example_, and _Map Example_, then close the list of 
-visualizations by clicking the small up-arrow at the bottom of the list. You can move the containers for each 
-visualization by clicking and dragging the title bar. Resize the containers by dragging the lower right corner of a 
-visualization's container. Your sample dashboard should end up looking roughly like this:
+Kibanaのダッシュボードでは、可視化したものを配置してシェアすることができます。
+A Kibana dashboard is a collection of visualizations that you can arrange and share.
+*Dashboard* タブを開き、検索ボックスの右側の端にある *Add Visualization* をクリックすると、保存した可視化の一覧が表示されます。
+_Markdown Example_, _Pie Example_, _Bar Example_, _Map Example_ を選択したら、一覧の下にある小さな上向きの矢印をクリックして可視化の一覧を閉じます。
+それぞれの可視化をクリックしてタイトルバーをドラッグすることで、コンテナを移動させることができます。
+また、可視化のコンテナの右下隅をドラッグすることで、リサイズすることができます。
+サンプルのダッシュボードは、最終的にだいたい以下のようになるでしょう:
 
 image::images/tutorial-dashboard.png[]
 
-Click the *Save Dashboard* button, then name the dashboard _Tutorial Dashboard_. You can share a saved dashboard by 
-clicking the *Share* button to display HTML embedding code as well as a direct link.
+*Save Dashboard* ボタンをクリックし _Tutorial Dashboard_ という名前を付けます。
+*Share* ボタンをクリックすることで、保存したダッシュボードを、埋め込みHTML、またはリンクをシェアすることができます。
 
 [float]
 [[wrapping-up]]
 === Wrapping Up
 
-Now that you've handled the basic aspects of Kibana's functionality, you're ready to explore Kibana in further detail. 
-Take a look at the rest of the documentation for more details!
+ここまで、Kibanaの機能の基本的な側面に触れて、Kibanaをより詳細に探索する準備ができました。
+より詳細に知りたい場合は残りのドキュメントを見てください!
+

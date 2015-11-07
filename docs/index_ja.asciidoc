@@ -9,7 +9,7 @@ include::introduction_ja.asciidoc[]
 
 include::setup_ja.asciidoc[]
 
-include::getting-started.asciidoc[]
+include::getting-started_ja.asciidoc[]
 
 include::plugins_ja.asciidoc[]
 
