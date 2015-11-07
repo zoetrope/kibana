@@ -1,0 +1,21 @@
+*Count*:: {ref}/search-aggregations-metrics-valuecount-aggregation.html[_count_] aggregationは、選択されたインデックスパターンの要素数を返します。
+*Average*:: {ref}/search-aggregations-metrics-avg-aggregation.html[_average_] aggregationは、数値フィールドの平均値を返します。ドロップダウンからフィールドを選択してください。
+*Sum*:: {ref}/search-aggregations-metrics-sum-aggregation.html[_sum_] aggregation は、数値フィールドの合計値を返します。ドロップダウンからフィールドを選択してください。
+*Min*:: {ref}/search-aggregations-metrics-min-aggregation.html[_min_] aggregation は、数値フィールドの最小値を返します。
+ドロップダウンからフィールドを選択してください。
+*Max*:: {ref}/search-aggregations-metrics-max-aggregation.html[_max_] aggregation は数値フィールドの最大値を返します。
+ドロップダウンからフィールドを選択してください。
+*Unique Count*:: {ref}/search-aggregations-metrics-cardinality-aggregation.html[_cardinality_] aggregation は、フィールドの中のユニークな値の数を返します。
+ドロップダウンからフィールドを選択してください。
+*Standard Deviation*:: The {ref}/search-aggregations-metrics-extendedstats-aggregation.html[_extended stats_] 
+aggregation returns the standard deviation of data in a numeric field. Select a field from the drop-down.
+*Percentiles*:: {ref}/search-aggregations-metrics-percentile-aggregation.html[_percentile_] aggregation は、数値フィールドの値を指定した幅のパーセンタイルに分割します。
+ドロップダウンからフィールドを選択し、 *Percentiles* フィールドの範囲を1つ以上指定してください。
+*×* をクリックするとパーセンタイルフィールドを削除できます。
+*+ Add* をクリックすると、パーセンタイルフィールドを追加できます。
+*Percentile Rank*:: {ref}/search-aggregations-metrics-percentile-rank-aggregation.html[_percentile ranks_] aggregationは、指定した数値フィールドの値のパーセンタイルランキングを返します。
+ドロップダウンからフィールドを選択し、 *Percentiles* フィールドの範囲を1つ以上指定してください。
+*×* をクリックするとパーセンタイルフィールドを削除できます。
+*+ Add* をクリックすると、パーセンタイルフィールドを追加できます。
+
+*+ Add Aggregation* ボタンをクリックすると、aggregationを追加することができます。

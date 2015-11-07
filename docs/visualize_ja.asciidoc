@@ -133,7 +133,7 @@ Aggregation Builder.
 The preview canvas displays a preview of the visualization you've defined in the aggregation builder. To refresh the
 visualization preview, clicking the *Refresh* button image:images/K4Refresh.png[Refresh button] on the toolbar.
 
-include::area.asciidoc[]
+include::area_ja.asciidoc[]
 
 include::datatable.asciidoc[]
 

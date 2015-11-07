@@ -1,0 +1,39 @@
+
+このグラフのX軸は _buckets_ の軸です。
+グラフ上のエリアを分割したり、グラフ自体を分割したりするために、X軸にbucketを定義することができます。
+
+このグラフのX軸は、以下のaggregationをサポートします。
+それぞれのaggregationのリンク名をクリックすると、Elasticsearchのドキュメントが開きます。
+
+*Date Histogram*:: {ref}search-aggregations-bucket-datehistogram-aggregation.html[_date histogram_] は、数値フィールドから組み立てられ、日付によりまとめられます。
+時間の間隔を秒、分、時間、日、週、月、年で指定することができます。
+また、 *Custom* を選択すると、数値と時間の単位をテキストフィールドに入力することで、独自の時間間隔を指定することができます。
+ここで利用できる時間の単位は、 *s* で秒、 *m* で分、 *h* で時間、 *d* で日、 *w* で週、 *y* で年です。
+時間の単位は、より正確なレベル(1秒まで)の異なる単位をサポートします。
+
+*Histogram*:: 標準の {ref}search-aggregations-bucket-histogram-aggregation.html[_histogram_] は、数値フィールドから組み立てられます。
+このフィールドの期間を整数値で指定します。
+*Show empty buckets* のチェックボックスを選択すると、ヒストグラムにデータが空の期間が含まれるようになります。
+*Range*:: {ref}search-aggregations-bucket-range-aggregation.html[_range_] aggregationでは、数値フィールドの値の範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Date Range*:: {ref}search-aggregations-bucket-daterange-aggregation.html[_date range_] aggregationは、指定した日付の範囲に含まれる値を表示します。
+{ref}common-options.html#date-math[_date math_] 式を使って、日付の範囲を指定します。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*IPv4 Range*:: {ref}search-aggregations-bucket-iprange-aggregation.html[_IPv4 range_] aggregationは、指定したIPv4形式のIPアドレスの範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Terms*:: {ref}search-aggregations-bucket-terms-aggregation.html[_terms_] aggregationは、指定したフィールドを、その数もしくは特定の統計情報で並べたときの上位または下位 _n_ 件の要素を表示します。
+*Filters*:: {ref}search-aggregations-bucket-filters-aggregation.html[_filters_] は、データのフィルタを指定することができます。
+フィルタは、Discoverページの検索バーで使うのと同じように、クエリ文字列またはJSON形式で指定することができます。
+*Add Filter* をクリックするとフィルタを追加することができます。
+images:labelbutton.png[] *label* ボタンをクリックすると、可視化上に表示する名前を入力するためのラベルフィールドが開きます。
+*Significant Terms*:: {ref}search-aggregations-bucket-significantterms-aggregation.html[_significant terms_] aggregationは、実験的に重要な用語の結果を表示します。
+
+X軸のaggregationを1つ指定すると、可視化を改良するためのsub-aggregationを定義できるようになります。
+Once you've specified an X axis aggregation, you can define sub-aggregations to refine the visualization.
+sub-aggregationを定義するために *+ Add Sub Aggregation* をクリックし、 *Split Area* または *Split Chart* を選択し、タイプの一覧からsub-aggregationを選択します。
+
+グラフの軸に複数のaggregationが定義されているとき、aggregationのタイプの右側にある上向き・下向きの矢印を使って、aggregationの優先順位を変更することができます。
+
