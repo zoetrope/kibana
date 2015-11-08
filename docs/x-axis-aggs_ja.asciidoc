@@ -31,8 +31,6 @@ images:labelbutton.png[] *label* ボタンをクリックすると、可視化�
 *Significant Terms*:: {ref}search-aggregations-bucket-significantterms-aggregation.html[_significant terms_] aggregationは、実験的に重要な用語の結果を表示します。
 
 X軸のaggregationを1つ指定すると、可視化を改良するためのsub-aggregationを定義できるようになります。
-Once you've specified an X axis aggregation, you can define sub-aggregations to refine the visualization.
 sub-aggregationを定義するために *+ Add Sub Aggregation* をクリックし、 *Split Area* または *Split Chart* を選択し、タイプの一覧からsub-aggregationを選択します。
 
 グラフの軸に複数のaggregationが定義されているとき、aggregationのタイプの右側にある上向き・下向きの矢印を使って、aggregationの優先順位を変更することができます。
-

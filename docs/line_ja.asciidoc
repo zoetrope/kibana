@@ -1,0 +1,59 @@
+[[line-chart]]
+=== Line Charts
+
+このグラフのY軸は _metrics_ の軸です。
+この軸には、以下のaggregationを利用することができます:
+
+include::y-axis-aggs_ja.asciidoc[]
+
+bucket aggregationを選択する前に、1つのグラフを複数の線に分割したいのか、グラフを複数に分割したいのかを明らかにしてください。
+複数のグラフに分割する場合は、他のaggregationの前に実行しなければなりません。
+グラフを分割したとき、 *Rows | Columns* のセレクタをクリックすると、縦方向と横方向のどちらに分割して表示されるのかを変更することができます。
+
+include::x-axis-aggs_ja.asciidoc[]
+
+*Advanced* リンクをクリックすると、metricやbucket aggregationのより詳細なオプションを表示することができます。
+
+*Exclude Pattern*:: 結果からこのフィールドを除外するためのパターンを指定します。
+*Exclude Pattern Flags*:: Exclude Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*Include Pattern*:: 結果にこのフィールドを含めるためのパターンを指定します。
+*Include Pattern Flags*:: Include Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*JSON Input*:: aggregationの定義にマージするJSON形式のプロパティを追加できるテキストフィールドです。以下に例を示します:
+
+[source,shell]
+{ "script" : "doc['grade'].value * 1.2" }
+
+NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するためには {ref}/modules-scripting.html[dynamic Groovy scripting] を有効にする必要があります。
+
+上記のオプションが利用できるかどうかは、選択したaggregationによって変化します。
+
+*Options* タブを選択すると、グラフの以下の性質を変更することができます:
+
+*Y-Axis Scale*:: *linear*, *log*, *square root* でY軸のスケールを変更することができます。
+対数目盛(log scale)は、複利のグラフなどのように、指数関数的に変化するデータを表示するために利用できます。
+また、開平目盛(square root scale)は、変動性自体が可変するデータを規則化して表示するために利用できます。
+検査されている領域において変動性自体が可変であるこの種のデータは、不等分散性(_heteroscedastic_)のあるデータとして知られています
+たとえば、身長に対する体重のデータが、身長が低いところでは比較的変動の範囲が狭く、身長の高いところでは変動の範囲が広かった場合、そのデータは不等分散性があると言います。
+*Smooth Lines*:: チェックすると、点と点を結んだ線をなめらかな曲線にします。
+なめらかな線は、必ずデータの表現に影響を及ぼし、あいまい性を生む可能性があるので、注意してください。
+*Show Connecting Lines*:: チェックすると、点と点の間に線を描きます。
+*Show Circles*:: チェックすると、各データの点を小さな円で描画します。
+*Current time marker*:: 時系列データの場合、チェックすると現在の時間を赤い線で描画します。
+*Set Y-Axis Extents*:: チェックを入れて、 *y-max* と *y-min* フィールドに値を入力すると、Y軸の最大値・最小値を設定できます。
+*Show Tooltip*:: チェックを入れるとツールチップを表示します。
+*Show Legend*:: チェックを入れると、グラフの近くに凡例を表示します。
+*Scale Y-Axis to Data Bounds*:: デフォルトでは、Y軸の範囲は0からデータの最大値になっています。
+チェックを入れると、下限と上限の両方の範囲が、データの値にマッチするようになります。
+
+オプションを変更したあと、緑色の *Apply changes* ボタンをクリックすると、可視化を更新することができます。
+また、灰色の *Discard changes* ボタンをクリックすると、現在の可視化の状態をキープします。
+
+[float]
+[[bubble-chart]]
+=== Bubble Charts
+以下の手順を実行することで、線グラフをバブルチャートに変換することができます。
+
+. 可視化のY軸の *Add Metrics* をクリックし、 *Dot Size* を選択します。
+. ドロップダウンの一覧からmetric aggregationを選択します。
+. *Options* タブの *Show Connecting Lines* のチェックを外します。
+. *Apply changes* ボタンをクリックします。

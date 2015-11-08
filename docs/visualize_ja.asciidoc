@@ -137,11 +137,11 @@ include::area_ja.asciidoc[]
 
 include::datatable_ja.asciidoc[]
 
-include::line.asciidoc[]
+include::line_ja.asciidoc[]
 
-include::markdown.asciidoc[]
+include::markdown_ja.asciidoc[]
 
-include::metric.asciidoc[]
+include::metric_ja.asciidoc[]
 
 include::pie.asciidoc[]
 

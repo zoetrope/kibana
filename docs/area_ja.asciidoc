@@ -2,7 +2,7 @@
 === Area Charts
 
 このグラフのY軸は _metrics_ の軸です。
-この軸には、以下のaggregationを利用することができます。
+この軸には、以下のaggregationを利用することができます:
 
 *Count*:: {ref}/search-aggregations-metrics-valuecount-aggregation.html[_count_] aggregationは、選択されたインデックスパターンの要素数を返します。
 *Average*:: {ref}/search-aggregations-metrics-avg-aggregation.html[_average_] aggregationは、数値フィールドの平均値を返します。ドロップダウンからフィールドを選択してください。

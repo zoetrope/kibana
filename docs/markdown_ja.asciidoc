@@ -1,0 +1,8 @@
+[[markdown-widget]]
+=== Markdownウィジェット
+
+Markdownウィジェットは、GFM(GitHub-flavored Markdown)形式のテキストに対応したテキスト入力フィールドです。
+Kibanaは、このフィールドに入力したテキストを描画し、その結果をダッシュボードに表示します。
+GitHub flavored Markdownについて知りたい場合は *Hlep* リンクをクリックして https://help.github.com/articles/github-flavored-markdown/[help page] を開いてください。
+*Apply* をクリックすると、プレビュー領域にテキストが描画されます。
+また、 *Discard* をクリックすると、1つ前のバージョンに戻ります。

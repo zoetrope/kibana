@@ -7,8 +7,7 @@
 ドロップダウンからフィールドを選択してください。
 *Unique Count*:: {ref}/search-aggregations-metrics-cardinality-aggregation.html[_cardinality_] aggregation は、フィールドの中のユニークな値の数を返します。
 ドロップダウンからフィールドを選択してください。
-*Standard Deviation*:: The {ref}/search-aggregations-metrics-extendedstats-aggregation.html[_extended stats_] 
-aggregation returns the standard deviation of data in a numeric field. Select a field from the drop-down.
+*Standard Deviation*:: {ref}/search-aggregations-metrics-extendedstats-aggregation.html[_extended stats_] aggregationは、数値フィールドの標準偏差を返します。フィールドをドロップダウンから選択してください。
 *Percentiles*:: {ref}/search-aggregations-metrics-percentile-aggregation.html[_percentile_] aggregation は、数値フィールドの値を指定した幅のパーセンタイルに分割します。
 ドロップダウンからフィールドを選択し、 *Percentiles* フィールドの範囲を1つ以上指定してください。
 *×* をクリックするとパーセンタイルフィールドを削除できます。
