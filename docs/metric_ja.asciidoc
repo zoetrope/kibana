@@ -1,20 +1,19 @@
 [[metric-chart]]
 === Metric
 
-A metric visualization displays a single number for each aggregation you select:
+metric visualizationは、選択したaggregationの単一の数値を表示します:
 
-include::y-axis-aggs.asciidoc[]
-You can click the *Advanced* link to display more customization options:
+include::y-axis-aggs_ja.asciidoc[]
 
-*JSON Input*:: A text field where you can add specific JSON-formatted properties to merge with the aggregation 
-definition, as in the following example:
+*Advanced* リンクをクリックすると、より詳細なオプションを表示することができます:
+
+*JSON Input*:: aggregationの定義にマージするJSON形式のプロパティを追加できるテキストフィールドです。以下に例を示します:
 
 [source,shell]
 { "script" : "doc['grade'].value * 1.2" }
 
-NOTE: In Elasticsearch releases 1.4.3 and later, this functionality requires you to enable 
-{ref}/modules-scripting.html[dynamic Groovy scripting].
+NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するためには {ref}/modules-scripting.html[dynamic Groovy scripting] を有効にする必要があります。
 
-The availability of these options varies depending on the aggregation you choose.
+上記のオプションが利用できるかどうかは、選択したaggregationによって変化します。
 
-Click the *Options* tab to change the font used to display the metrics.
+*Options* タブをクリックすると、metricを表示するために利用するフォントを変更できます。

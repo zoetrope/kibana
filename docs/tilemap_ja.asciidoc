@@ -1,0 +1,122 @@
+[[tilemap]]
+=== Tile Maps
+
+タイルマップは、指定したbucketによって決定されたデータをキーにした円を、地図上に重ね合わせてを表示します:
+
+タイルマップのデフォルトの _metrics_ aggregationは、 *Count* です。
+metric aggregationとしては、以下のaggregationのいずれかを選択することができます:
+
+*Count*:: {ref}/search-aggregations-metrics-valuecount-aggregation.html[_count_] aggregationは、選択されたインデックスパターンの要素数を返します。
+*Average*:: {ref}/search-aggregations-metrics-avg-aggregation.html[_average_] aggregationは、数値フィールドの平均値を返します。ドロップダウンからフィールドを選択してください。
+*Sum*:: {ref}/search-aggregations-metrics-sum-aggregation.html[_sum_] aggregation は、数値フィールドの合計値を返します。ドロップダウンからフィールドを選択してください。
+*Min*:: {ref}/search-aggregations-metrics-min-aggregation.html[_min_] aggregation は、数値フィールドの最小値を返します。
+ドロップダウンからフィールドを選択してください。
+*Max*:: {ref}/search-aggregations-metrics-max-aggregation.html[_max_] aggregation は数値フィールドの最大値を返します。
+ドロップダウンからフィールドを選択してください。
+*Unique Count*:: {ref}/search-aggregations-metrics-cardinality-aggregation.html[_cardinality_] aggregation は、フィールドの中のユニークな値の数を返します。
+ドロップダウンからフィールドを選択してください。
+
+_buckets_ aggregationは、データからどの情報が引き出されるのかを決定します。
+
+bucket aggregationを選択する前に、図を分割するのか、1つの図上に *Geo Coordinates* としてbucketを表示するのかを選択してください。
+複数の図に分割する場合は、他のaggregationの前に実行しなければなりません。
+
+タイルマップは初期状態で *Geohash* aggregationを使います。
+ドロップダウンから、座標のフィールドを選択してください。
+*Precision* スライダーは、マップ上に表示される結果の粒度を決定します。
+Precisionのレベルによって、領域がどのように変化するのかは、{ref}search-aggregations-bucket-geohashgrid-aggregation.html#_cell_dimensions_at_the_equator[geohash grid] aggregationのドキュメントをご覧ください。
+Kibanaでは、最大でlength 7までをサポートします。
+
+NOTE: Precisionの値を大きくすると、Kibanaを表示するブラウザのメモリ使用量と、基礎となるElasticsearchクラスタのメモリ使用量が増加します。
+
+
+bucketタイプのaggregationを1つ指定すると、可視化を改良するためのsub-aggregationを定義できるようになります。
+タイルマップは、図を分割するsub-aggregationのみをサポートします。
+sub-aggregationを定義するために *+ Add Sub Aggregation* をクリックし、 *Split Chart* を選択し、タイプの一覧からsub-aggregationを選択します:
+
+*Date Histogram*:: {ref}search-aggregations-bucket-datehistogram-aggregation.html[_date histogram_] は、数値フィールドから組み立てられ、日付によりまとめられます。
+時間の間隔を秒、分、時間、日、週、月、年で指定することができます。
+また、 *Custom* を選択すると、数値と時間の単位をテキストフィールドに入力することで、独自の時間間隔を指定することができます。
+ここで利用できる時間の単位は、 *s* で秒、 *m* で分、 *h* で時間、 *d* で日、 *w* で週、 *y* で年です。
+時間の単位は、より正確なレベル(1秒まで)の異なる単位をサポートします。
+*Histogram*:: 標準の {ref}search-aggregations-bucket-histogram-aggregation.html[_histogram_] は、数値フィールドから組み立てられます。
+このフィールドの期間を整数値で指定します。
+*Range*:: {ref}search-aggregations-bucket-range-aggregation.html[_range_] aggregationでは、数値フィールドの値の範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Date Range*:: {ref}search-aggregations-bucket-daterange-aggregation.html[_date range_] aggregationは、指定した日付の範囲に含まれる値を表示します。
+{ref}common-options.html#date-math[_date math_] 式を使って、日付の範囲を指定します。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*IPv4 Range*:: {ref}search-aggregations-bucket-iprange-aggregation.html[_IPv4 range_] aggregationは、指定したIPv4形式のIPアドレスの範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Terms*:: {ref}search-aggregations-bucket-terms-aggregation.html[_terms_] aggregationは、指定したフィールドを、その数もしくは特定の統計情報で並べたときの上位または下位 _n_ 件の要素を表示します。
+*Filters*:: {ref}search-aggregations-bucket-filters-aggregation.html[_filters_] は、データのフィルタを指定することができます。
+フィルタは、Discoverページの検索バーで使うのと同じように、クエリ文字列またはJSON形式で指定することができます。
+*Add Filter* をクリックするとフィルタを追加することができます。
+images:labelbutton.png[] *label* ボタンをクリックすると、可視化上に表示する名前を入力するためのラベルフィールドが開きます。
+*Significant Terms*:: {ref}search-aggregations-bucket-significantterms-aggregation.html[_significant terms_] aggregationは、実験的に重要な用語の結果を表示します。
+*Size* パラメータの値は、このaggregationが返す項目の数を定義します。
+*Geohash*:: The {ref}search-aggregations-bucket-geohashgrid-aggregation.html[_geohash_] aggregationは、geohashの座標に基づいた点を表示します。
+
+NOTE: デフォルトでは *Change precision on map zoom* はチェックされています。チェックを外すとこの挙動を無効化します。
+
+*Advanced* リンクをクリックすると、metricやbucket aggregationのより詳細なオプションを表示することができます。
+
+*Exclude Pattern*:: 結果からこのフィールドを除外するためのパターンを指定します。
+*Exclude Pattern Flags*:: Exclude Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*Include Pattern*:: 結果にこのフィールドを含めるためのパターンを指定します。
+*Include Pattern Flags*:: Include Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*JSON Input*:: aggregationの定義にマージするJSON形式のプロパティを追加できるテキストフィールドです。以下に例を示します:
+
+[source,shell]
+{ "script" : "doc['grade'].value * 1.2" }
+
+NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するためには {ref}/modules-scripting.html[dynamic Groovy scripting] を有効にする必要があります。
+
+上記のオプションが利用できるかどうかは、選択したaggregationによって変化します。
+
+*Options* タブを選択すると、タイルマップの以下の性質を変更することができます:
+
+*Map type*:: ドロップダウンから以下のオプションの1つを選択します。
+*_Scaled Circle Markers_*:: metric aggregationの値に応じて、マーカーのサイズを変化させます。
+*_Shaded Circle Markers_*:: metric aggregationの値に応じて、マーカーを異なる明度で表示します。
+*_Shaded Geohash Grid_*:: metric aggregationの値に応じて異なる明度で表示し、さらに丸いマーカーの代わりに、geohashのグリッドの四角形のセルで表示します。
+*_Heatmap_*:: ヒートマップは、丸いマーカーをぼんやりと表示し、重ね合わせた量に応じて明度が変わります。
+さらに、ヒートマップは以下のオプションがあります。
+
+* *Radius*: ヒートマップの点のサイズを設定します。
+* *Blur*: ヒットマップの点をぼかす量を設定します。
+* *Maximum zoom*: Kibanaのタイルマップはズームレベルを18までサポートします。
+このスライダーは、ヒートマップの点が最大強度で表示されるズームレベルの最大値を定義します。
+* *Minimum opacity*: 点の透明度の下限を設定します。
+* *Show Tooltip*: チェックすると、点にマウスカーソルを合わせたときに、その点の値をツールチップで表示します。
+
+*Desaturate map tiles*:: Desaturate the map's color in order to make the markers stand out more clearly.
+*WMS compliant map server*:: Check this box to enable the use of a third-party mapping service that complies with the Web Map Service (WMS) standard.
+Specify the following elements:
+
+* *WMS url*: The URL for the WMS map service.
+* *WMS layers*: A comma-separated list of the layers to use in this visualization.
+Each map server provides its own list of layers.
+* *WMS version*: The WMS version used by this map service.
+* *WMS format*: The image format used by this map service.
+The two most common formats are `image/png` and `image/jpeg`.
+* *WMS attribution*: An optional, user-defined string that identifies the map source.
+Maps display the attribution string in the lower right corner.
+* *WMS styles*: A comma-separated list of the styles to use in this visualization.
+Each map server provides its own styling options.
+
+After changing options, click the green *Apply changes* button to update your visualization, or the grey *Discard changes* button to keep your visualization in its current state.
+
+[float]
+[[navigating-map]]
+==== Navigating the Map
+Once your tilemap visualization is ready, you can explore the map in several ways:
+
+* Click and hold anywhere on the map and move the cursor to move the map center.
+Hold Shift and drag a bounding box across the map to zoom in on the selection. 
+* Click the *Zoom In/Out* image:images/viz-zoom.png[] buttons to change the zoom level manually.
+* Click the *Fit Data Bounds* image:images/viz-fit-bounds.png[] button to automatically crop the map boundaries to the geohash buckets that have at least one result.
+* Click the *Latitude/Longitude Filter* image:images/viz-lat-long-filter.png[] button, then drag a bounding box across the map, to create a filter for the box coordinates.

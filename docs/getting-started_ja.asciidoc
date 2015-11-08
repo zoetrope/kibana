@@ -96,7 +96,28 @@ curl -XPUT http://localhost:9200/shakespeare -d '
 * _play_name_ フィールドも同じです。
 * line_id と speech_number フィールドは整数値になります。
 
-口座データとlogstashのデータは、特定のマッピングを必要としません。
+口座データには、特定のマッピングを必要としません。
+logstashのデータには以下のマッピングを適用します。
+
+[source,shell]
+curl -XPUT http://localhost:9200/logstash-2015.05.18 -d '
+{
+ "mappings" : {
+  "log" : {
+   "properties" : {
+    "geo" : {
+     "properties" : {
+      "coordinates" : {
+        "type" : "geo_point"
+      }
+     }
+    }
+   }
+  }
+ }
+}
+';
+
 これで、以下のコマンドでElasticsearchにデータを投入する準備ができました:
 
 [source,shell]

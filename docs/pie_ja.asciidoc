@@ -1,0 +1,74 @@
+[[pie-chart]]
+=== Pie Charts
+
+円グラフを分割するサイズは、 _metrics_ aggregationにより決定されます。
+この軸には、以下のaggregationを利用することができます:
+
+
+*Count*:: {ref}/search-aggregations-metrics-valuecount-aggregation.html[_count_] aggregationは、選択されたインデックスパターンの要素数を返します。
+*Sum*:: {ref}/search-aggregations-metrics-sum-aggregation.html[_sum_] aggregation は、数値フィールドの合計値を返します。ドロップダウンからフィールドを選択してください。
+*Unique Count*:: {ref}/search-aggregations-metrics-cardinality-aggregation.html[_cardinality_] aggregation は、フィールドの中のユニークな値の数を返します。
+ドロップダウンからフィールドを選択してください。
+
+_buckets_ aggregationは、データからどの情報が引き出されるのかを決定します。
+
+bucket aggregationを選択する前に、1つのグラフを複数の領域に分割したいのか、グラフを複数に分割したいのかを明らかにしてください。
+複数のグラフに分割する場合は、他のaggregationの前に実行しなければなりません。
+グラフを分割したとき、 *Rows | Columns* のセレクタをクリックすると、縦方向と横方向のどちらに分割して表示されるのかを変更することができます。
+
+円グラフには、以下のbucket aggregationのいずれかを指定することができます:
+
+*Date Histogram*:: {ref}search-aggregations-bucket-datehistogram-aggregation.html[_date histogram_] は、数値フィールドから組み立てられ、日付によりまとめられます。
+時間の間隔を秒、分、時間、日、週、月、年で指定することができます。
+また、 *Custom* を選択すると、数値と時間の単位をテキストフィールドに入力することで、独自の時間間隔を指定することができます。
+ここで利用できる時間の単位は、 *s* で秒、 *m* で分、 *h* で時間、 *d* で日、 *w* で週、 *y* で年です。
+時間の単位は、より正確なレベル(1秒まで)の異なる単位をサポートします。
+*Histogram*:: 標準の {ref}search-aggregations-bucket-histogram-aggregation.html[_histogram_] は、数値フィールドから組み立てられます。
+このフィールドの期間を整数値で指定します。
+*Show empty buckets* チェックボックスを選択すると、ヒストグラムの空の期間を含むようになります。
+*Range*:: {ref}search-aggregations-bucket-range-aggregation.html[_range_] aggregationでは、数値フィールドの値の範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Date Range*:: {ref}search-aggregations-bucket-daterange-aggregation.html[_date range_] aggregationは、指定した日付の範囲に含まれる値を表示します。
+{ref}common-options.html#date-math[_date math_] 式を使って、日付の範囲を指定します。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*IPv4 Range*:: {ref}search-aggregations-bucket-iprange-aggregation.html[_IPv4 range_] aggregationは、指定したIPv4形式のIPアドレスの範囲を指定することができます。
+*Add Range* をクリックすると、範囲を追加することができます。
+赤い *(×)* をクリックすると、範囲を削除することができます。
+*Terms*:: {ref}search-aggregations-bucket-terms-aggregation.html[_terms_] aggregationは、指定したフィールドを、その数もしくは特定の統計情報で並べたときの上位または下位 _n_ 件の要素を表示します。
+*Filters*:: {ref}search-aggregations-bucket-filters-aggregation.html[_filters_] は、データのフィルタを指定することができます。
+フィルタは、Discoverページの検索バーで使うのと同じように、クエリ文字列またはJSON形式で指定することができます。
+*Add Filter* をクリックするとフィルタを追加することができます。
+images:labelbutton.png[] *label* ボタンをクリックすると、可視化上に表示する名前を入力するためのラベルフィールドが開きます。
+*Significant Terms*:: {ref}search-aggregations-bucket-significantterms-aggregation.html[_significant terms_] aggregationは、実験的に重要な用語の結果を表示します。
+*Size* パラメータの値は、このaggregationが返す項目の数を定義します。
+
+初期のbucketタイプのaggregationを1つ指定したあと、可視化を改良するためのsub-aggregationを定義できるようになります。
+sub-aggregationを定義するために *+ Add Sub Aggregation* をクリックし、 *Split Slices* を選択し、タイプの一覧からsub-aggregationを選択します。
+
+グラフの軸に複数のaggregationが定義されているとき、aggregationのタイプの右側にある上向き・下向きの矢印を使って、aggregationの優先順位を変更することができます。
+
+*Advanced* リンクをクリックすると、metricやbucket aggregationのより詳細なオプションを表示することができます。
+
+*Exclude Pattern*:: 結果からこのフィールドを除外するためのパターンを指定します。
+*Exclude Pattern Flags*:: Exclude Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*Include Pattern*:: 結果にこのフィールドを含めるためのパターンを指定します。
+*Include Pattern Flags*:: Include Patternでマッチさせるときに利用するフラグ(Javaの正規表現用)を指定します。
+*JSON Input*:: aggregationの定義にマージするJSON形式のプロパティを追加できるテキストフィールドです。以下に例を示します:
+
+[source,shell]
+{ "script" : "doc['grade'].value * 1.2" }
+
+NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するためには {ref}/modules-scripting.html[dynamic Groovy scripting] を有効にする必要があります。
+
+上記のオプションが利用できるかどうかは、選択したaggregationによって変化します。
+
+*Options* タブを選択すると、グラフの以下の性質を変更することができます:
+
+*Donut*:: パイ状にグラフを分割する代わりに、リング上にグラフを分割して表示します。
+*Show Tooltip*:: チェックを入れるとツールチップを表示します。
+*Show Legend*:: チェックを入れると、グラフの近くに凡例を表示します。
+
+オプションを変更したあと、緑色の *Apply changes* ボタンをクリックすると、可視化を更新することができます。
+また、灰色の *Discard changes* ボタンをクリックすると、現在の可視化の状態をキープします。

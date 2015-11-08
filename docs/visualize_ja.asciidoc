@@ -143,8 +143,8 @@ include::markdown_ja.asciidoc[]
 
 include::metric_ja.asciidoc[]
 
-include::pie.asciidoc[]
+include::pie_ja.asciidoc[]
 
-include::tilemap.asciidoc[]
+include::tilemap_ja.asciidoc[]
 
-include::vertbar.asciidoc[]
+include::vertbar_ja.asciidoc[]
