@@ -1,0 +1,140 @@
+[[dashboard]]
+== Dashboard
+
+Kibanaの _dashboard_ は、保存した可視化をグループごとに自由に並び替えて表示します。
+ダッシュボードは保存して、あとでシェアしたりロードしたりすることができます。
+
+.Sample dashboard
+image:images/NYCTA-Dashboard.jpg[Example dashboard]
+
+[float]
+[[dashboard-getting-started]]
+=== 始めましょう
+
+ダッシュボードを使うためには、少なくとも1つ以上の保存済みの <<visualize, visualization>> が必要になります。
+
+[float]
+[[creating-a-new-dashboard]]
+==== 新しいダッシュボードの作成
+
+初めて *Dashboard* タブをクリックしたとき、Kibanaは空のダッシュボードを表示します。
+
+image:images/NewDashboard.png[New Dashboard screen]
+
+可視化を追加して、ダッシュボードを組み立てましょう。
+デフォルトでは、Kibanaのダッシュボードは、明るい色のテーマを利用します。
+これの代わりに暗い色のテーマを利用するには、 *Settings* image:images/SettingsButton.jpg[Gear] ボタンをクリックし、 *Use dark theme* にチェックを入れてください。
+
+image:images/darktheme.png[Dark Theme Example]
+
+NOTE: *Settings* タブの *Advanced* の項目で、デフォルトのテーマを変更することができます。
+
+[float]
+[[adding-visualizations-to-a-dashboard]]
+==== ダッシュボードに可視化を追加する
+
+ダッシュボードに可視化を追加するためには、ツールバーの *Add Visualization* image:images/AddVis.png[Plus] ボタンをクリックします。
+一覧の中から保存済みの可視化を選択します。
+*Visualization Filter* フィールドに文字列を入力することで、この可視化の一覧をフィルタリングすることができます。
+
+選択した可視化は、ダッシュボードの _container_ に現れます。
+
+NOTE: containerの高さか幅が小さすぎるというメッセージが表示された場合は、 <<resizing-containers,containerのサイズを変更してください>>。
+
+[float]
+[[saving-dashboards]]
+==== ダッシュボードの保存
+
+ダッシュボードを保存するには、ツールバーパネルの *Save Dashboard* ボタンをクリックし、 *Save As* フィールドにダッシュボードの名前を入力し、 *Save* ボタンをクリックしてください。
+デフォルトでは、ダッシュボードを保存したときのTime Filterの期間が保存されます。
+この振る舞いを無効にしたい場合は、 *Store time with dashboard* のチェックを外してから *Save* ボタンをクリックしてください。
+
+[float]
+[[loading-a-saved-dashboard]]
+==== ダッシュボードのロード
+
+*Load Saved Dashboard* ボタンをクリックすると、存在するダッシュボードの一覧が表示されます。
+保存されたダッシュボードのセレクターは、ダッシュボード名でフィルタリングするためのテキストフィールドと、保存されたダッシュボードを管理するためのObject Editorへのリンクを持っています。
+Object Editorは、 *Settings > Edit Saved Objects* をクリックすることでも開くことができます。
+
+[float]
+[[sharing-dashboards]]
+==== ダッシュボードのシェア
+
+ダッシュボードを他のユーザーと共有することができます。
+Kibanaのダッシュボードへの直接リンク、またはWebページに埋め込むことができるダッシュボードを共有することができます。
+
+NOTE: 埋め込まれたダッシュボードを見るためには、ユーザーはKibanaにアクセスしなければなりません。
+
+*Share* ボタンをクリックすると、他のWebページに埋め込むためのHTMLコードと、ダッシュボードへのリンクが表示されます。
+クリップボードにコードをコピーするか、リンクをコピーするのか、どちらかの選択肢でテキストを選択することができます。
+
+[float]
+[[embedding-dashboards]]
+==== ダッシュボードの埋め込み
+
+ダッシュボードを埋め込むためには、シェア機能の埋め込みコードを外部のWebアプリケーションの中にコピーします。
+
+[float]
+[[customizing-your-dashboard]]
+=== ダッシュボードの要素のカスタマイズ
+
+ダッシュボードの中の可視化は、配置可能な可変サイズの_コンテナ_として保存されています。
+このセクションでは、これらのコンテナのカスタマイズについて議論します。
+
+[float]
+[[moving-containers]]
+==== コンテナの移動
+
+コンテナのヘッダをクリックしてつかむと、ダッシュボードの中でコンテナを移動することができます。
+コンテナを移動するための場所をつくる必要がある場合は、他のコンテナがシフトします。
+マウスのボタンを離すと、コンテナの新しい場所が固定されます。
+
+[float]
+[[resizing-containers]]
+==== コンテナのサイズ変更
+
+マウスカーソルが点から角の形に変わるまでコンテナの右下にカーソルを動かします。
+マウスカーソルが変わったあとに、コンテナの角をクリックしてドラッグすると、コンテナのサイズを変更できます。
+マウスのボタンを離すと、新しいコンテナのサイズが固定されます。
+
+// enhancement request: a way to specify specific dimensions for a container in pixels, or at least display that info?
+
+[float]
+[[removing-containers]]
+==== コンテナの削除
+
+コンテナの右上にある *×* ボタンをクリックすると、ダッシュボードからコンテナを削除することができます。
+ダッシュボードからコンテナを削除するということは、保存した可視化を削除するということではありません。
+
+[float]
+[[viewing-detailed-information]]
+==== 詳細情報を見る
+
+コンテナの下部にあるバーをクリックすると、可視化のもとになっている生データを見ることができます。
+生データについての詳細情報のタブは、以下の例のように可視化を置き換えます:
+
+.Table
+ベースになっているデータを、ページネーションされたデータグリッドで表示します。
+各カラムの上部にあるヘッダーをクリックすることで、要素の並び替えをおこなうことができます。
+image:images/NYCTA-Table.jpg[]
+
+.Request
+サーバへのクエリとして使われた生のリクエストをJSONフォーマットで表示します。
+image:images/NYCTA-Request.jpg[]
+
+.Response
+サーバからの生のレスポンスをJSONフォーマットで表現します。
+image:images/NYCTA-Response.jpg[]
+
+.Statistics
+リクエストとレスポンスに関係する統計情報の概要を、データグリッドで表示します。
+このデータグリッドは、クエリにかかった時間、リクエストにかかった時間、サーバ上で見つかったレコードの数、クエリを作るのに使われたインデックスパターンを含みます。
+image:images/NYCTA-Statistics.jpg[]
+
+[float]
+[[changing-the-visualization]]
+=== 可視化の変更
+
+コンテナの右上にある _Edit_ ボタン image:images/EditVis.png[Pencil button] をクリックして、 <<visualize,Visualize>> ページの可視化を開いてください。
+

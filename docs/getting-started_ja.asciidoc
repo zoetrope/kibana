@@ -146,11 +146,8 @@ yellow open   logstash-2015.05.20   5   1       4750            0     16.4mb    
 === インデックスパターンの定義
 
 Elasticsearchにロードされたデータはそれぞれ https://www.elastic.co/guide/en/kibana/current/settings.html#settings-create-pattern[インデックスパターン] を持ちます。
-Each set of data loaded to Elasticsearch has an https://www.elastic.co/guide/en/kibana/current/settings.html#settings-create-pattern[index pattern].
 前のセクションで、シェイクスピアのデータは `shakespeare` という名前のインデックスを、口座データは `bank` という名前のインデックスを持っています。
-In the previous section, the Shakespeare data set has an index named `shakespeare`, and the accounts data set has an index named `bank`.
 _インデックスパターン_ は、複数のインデックスにマッチすることのできるワイルドカードを利用することもできます。
-An _index pattern_ is a string with optional wildcards that can match multiple indices.
 たとえば、よくあるログのユースケースにおいて、典型的なインデックス名はYYYY.MM.DDというフォーマットの日付を含み、5月のインデックスパターンであれば `logstash-2015.05*` のようになります。
 
 本チュートリアルは、先ほど登録した2つのインデックスのどちらにマッチするインデックスパターンでも動きます。
@@ -316,7 +313,7 @@ image::images/tutorial-visualize-md-1.png[]
 以下のテキストをフィールドに記述しましょう:
 
 [source,markdown]
-# This is a tutorial dashboard! 
+# This is a tutorial dashboard!
 The Markdown widget uses **markdown** syntax.
 > Blockquotes in Markdown use the > character.
 

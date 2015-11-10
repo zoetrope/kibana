@@ -58,8 +58,8 @@ _new search_ を選択した場合は、ドロップダウンからインデッ�
 [[visualization-editor]]
 ==== Step 3: The Visualization Editor
 
-The visualization editor enables you to configure and edit visualizations.
-The visualization editor has the following main elements:
+Visualization Editorでは、可視化の設定や変数をおこなうことができます。
+Visualization Editorは、以下の要素から構成されています:
 
 1. <<toolbar-panel,Toolbar>>
 2. <<aggregation-builder,Aggregation Builder>>
@@ -71,67 +71,64 @@ image:images/VizEditor.jpg[]
 [[toolbar-panel]]
 ===== Toolbar
 
-The toolbar has a search field for interactive data searches, as well as controls to manage saving and loading visualizations.
-For visualizations based on saved searches, the search bar is grayed out.
-To edit the search, replacing the saved search with the edited version, double-click the search field.
+ツールバーはインタラクティブにデータを検索するための検索フィールドと、可視化の保存や読み込みを管理するためのコントロールを持ちます。
+保存した検索条件をベースにした可視化の場合、検索バーはグレイアウトされます。
+検索条件を編集するためには、検索条件フィールドをダブルクリックし、保存された検索条件を編集したものと置き換えてください。
 
-The toolbar at the right of the search box has buttons for creating new visualizations, saving the current
-visualization, loading an existing visualization, sharing or embedding the visualization, and refreshing the data for
-the current visualization.
+検索ボックスの右のツールバーには、新しい可視化を作成するためのボタン、現在の可視化を保存するためのボタン、保存した可視化をロードするためのボタン、可視化をシェアしたり埋め込んだりするためのボタン、現在の可視化のデータを更新するためのボタンがあります。
 
 [float]
 [[aggregation-builder]]
 ===== Aggregation Builder
 
-Use the aggregation builder on the left of the page to configure the {ref}search-aggregations-metrics.html[metric] and {ref}search-aggregations-bucket.html[bucket] aggregations used in your
-visualization. Buckets are analogous to SQL `GROUP BY` statements. For more information on aggregations, see the main
-{ref}search-aggregations.html[Elasticsearch aggregations reference].
+ページの左側にあるAggregation Builderを利用すると {ref}search-aggregations-metrics.html[metric] と {ref}search-aggregations-bucket.html[bucket] aggregationを設定することができます。
+bucketとは、SQLの `GROUP BY` 文に似たものです。
+aggregationに関するより詳しい情報は {ref}search-aggregations.html[Elasticsearch aggregations reference] をご覧ください。
 
-Bar, line, or area chart visualizations use _metrics_ for the y-axis and _buckets_ are used for the x-axis, segment bar
-colors, and row/column splits. For pie charts, use the metric for the slice size and the bucket for the number of
-slices.
+棒グラフ、線グラフ、エリアチャートでは、 _metrics_ をY軸として利用し、 _buckets_ をX軸や、棒の色の分割、列や行の分割などに利用します。
+円グラフでは、metricを分割するときのサイズ、bucketを分割する数として利用します。
 
-Choose the metric aggregation for your visualization's Y axis, such as
+可視化のY軸としてmetric aggregationを選択してください。例えば以下のものがあります:
 {ref}search-aggregations-metrics-valuecount-aggregation.html[count],
 {ref}search-aggregations-metrics-avg-aggregation.html[average],
 {ref}search-aggregations-metrics-sum-aggregation.html[sum],
 {ref}search-aggregations-metrics-min-aggregation.html[min],
-{ref}search-aggregations-metrics-max-aggregation.html[max], or
+{ref}search-aggregations-metrics-max-aggregation.html[max],
 {ref}search-aggregations-metrics-cardinality-aggregation.html[cardinality]
-(unique count). Use bucket aggregations for the visualization's X axis, color slices, and row/column splits. Common
-bucket aggregations include date histogram, range, terms, filters, and significant terms.
+(unique count)。
+可視化のX軸、色の分割、行や列の分割などのためにbucket aggregationを利用してください。
+Use bucket aggregations for the visualization's X axis, color slices, and row/column splits.
+共通で利用できるbucket aggregationsには、date histogram, range, terms, filters, and significant termsがあります。
 
-You can set the order in which buckets execute. In Elasticsearch, the first aggregation determines the data set
-for any subsequent aggregations. The following example involves a date bar chart of Web page hits for the top 5 file
-extensions.
+このbucketの実行順序は、設定で変更することができます。
+Elasticsearchでは、最初のaggregationが、次のaggregationのためのデータを決定します。
+以下の例は、あるWebページでアクセス数の多いファイル拡張子のトップ5の時間ごとのグラフに関するものです。
 
-To use the same extension across all hits, set this order:
+全アクセスの中から抽出したトップ5の拡張子を利用する場合は、以下の順で設定します:
 
-1.  *Color:* Terms aggregation of extensions
-2.  *X-Axis:* Date bar chart of `@timestamp`
+1.  *Color:* `extensions`フィールドを指定してTerms aggregationを作成します
+2.  *X-Axis:* `@timestamp`フィールドを指定してDate histogramを作成します
 
-Elasticsearch collects the records for the top 5 extensions, then creates a date bar chart for each extension.
+Elasticsearchは、まずトップ5の拡張子のレコードを収集し、それから拡張子ごとに日付で分割した棒グラフを作成します。
 
-To chart the top 5 extensions for each hour, use the following order:
+各時間ごとのトップ5の拡張子を図示する場合は、以下の順に設定します:
 
-1.  *X-Axis:* Date bar chart of `@timestamp` (with 1 hour interval)
-2.  *Color:* Terms aggregation of extensions
+1.  *X-Axis:* `@timestamp`フィールドを指定してDate histogramを作成します (1時間間隔)
+2.  *Color:* `extensions`フィールドを指定してTerms aggregationを作成します
 
-For these requests, Elasticsearch creates a date bar chart from all the records, then groups the top five extensions
-inside each bucket, which in this example is a one-hour interval.
+これらのリクエストでは、Elasticsearchは、全レコードから日付で推移するグラフを作成し、それから各bucketの中のトップ5の拡張子をグルーピング(この例では1時間ごと)します。
 
-NOTE: Remember, each subsequent bucket slices the data from the previous bucket.
+NOTE: 各bucketは、前のbucketのデータを分割するのだと覚えておいてください。
 
-To render the visualization on the _preview canvas_, click the green *Apply Changes* button at the top right of the
-Aggregation Builder.
+_preview canvas_ に可視化を描画するには、Aggregation Builderの右上にある緑色の *Apply Changes* ボタンをクリックします。
 
 
 [float]
 [[preview-canvas]]
 ===== Preview Canvas
 
-The preview canvas displays a preview of the visualization you've defined in the aggregation builder. To refresh the
-visualization preview, clicking the *Refresh* button image:images/K4Refresh.png[Refresh button] on the toolbar.
+preview canvasは、aggregation builderで定義した可視化をプレビュー表示します。
+可視化のプレビューを更新するには、ツールバーの *Refresh* ボタン image:images/K4Refresh.png[Refresh button] をクリックします。
 
 include::area_ja.asciidoc[]
 

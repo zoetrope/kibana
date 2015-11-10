@@ -19,9 +19,9 @@ include::discover_ja.asciidoc[]
 
 include::visualize_ja.asciidoc[]
 
-include::dashboard.asciidoc[]
+include::dashboard_ja.asciidoc[]
 
-include::settings.asciidoc[]
+include::settings_ja.asciidoc[]
 
 include::production.asciidoc[]
 
