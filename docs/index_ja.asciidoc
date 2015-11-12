@@ -23,6 +23,6 @@ include::dashboard_ja.asciidoc[]
 
 include::settings_ja.asciidoc[]
 
-include::production.asciidoc[]
+include::production_ja.asciidoc[]
 
 include::releasenotes.asciidoc[]

@@ -305,71 +305,75 @@ deprecated[4.2, いくつかのKibanaサーバのプロパティ名は、Kibana 
 +
 *default*: `"0.0.0.0"`
 
-`elasticsearch.url` added[4.2]:: The Elasticsearch instance where the indices you want to query reside.
+`elasticsearch.url` added[4.2]:: 接続したいElasticsearchのインスタンスのURL
 +
 *alias*: `elasticsearch_url` deprecated[4.2]
 +
 *default*: `"http://localhost:9200"`
 
-`elasticsearch.preserveHost` added[4.2]:: By default, the host specified in the incoming request from the browser is specified as the host in the corresponding request Kibana sends to Elasticsearch. If you set this option to `false`, Kibana uses the host specified in `elasticsearch_url`.
+`elasticsearch.preserveHost` added[4.2]:: デフォルトでは、ブラウザからKibanaにやってくるリクエストのホスト名は、KibanaがElasticsearchに送る際に対応するリクエストのホスト名として利用されます。
+もしこのオプションを `false` に設定すると、Kibanaは `elasticsearch_url` に指定されたホスト名を使うようになります。
 +
 *alias*: `elasticsearch_preserve_host` deprecated[4.2]
 +
 *default*: `true`
 
-`elasticsearch.ssl.cert` added[4.2]:: This parameter specifies the path to the SSL certificate for Elasticsearch instances that require a client certificate.
+`elasticsearch.ssl.cert` added[4.2]:: このパラメータは、クライアント証明書を要求するElasticsearchインスタンスのための、SSL証明書のパスを指定します。
 +
 *alias*: `kibana_elasticsearch_client_crt` deprecated[4.2]
 
-`elasticsearch.ssl.key` added[4.2]:: This parameter specifies the path to the SSL key for Elasticsearch instances that require a client key.
+`elasticsearch.ssl.key` added[4.2]:: このパラメータは、クライアントの認証鍵を要求するElasticsearchインスンタンスのための、SSLの認証鍵のパスを指定します。
 +
 *alias*: `kibana_elasticsearch_client_key` deprecated[4.2]
 
-`elasticsearch.password` added[4.2]:: This parameter specifies the password for Elasticsearch instances that use HTTP basic authentication. Kibana users still need to authenticate with Elasticsearch, which is proxied through the Kibana server.
+`elasticsearch.password` added[4.2]:: このパラメータは、ベーシック認証を利用するElasticsearchインスタンスのためのパスワードを指定します。
+Kibanaサーバーを経由してElasticsearchがProxyされている場合、KibanaのユーザーはさらにElasticsearchの認証が必要になります。
 +
 *alias*: `kibana_elasticsearch_password` deprecated [4.2]
 
-`elasticsearch.username` added[4.2]:: This parameter specifies the username for Elasticsearch instances that use HTTP basic authentication. Kibana users still need to authenticate with Elasticsearch, which is proxied through the Kibana server.
+`elasticsearch.username` added[4.2]:: このパラメータは、ベーシック認証を利用するElasticsearchインスタンスのためのユーザー名を指定します。
+Kibanaサーバーを経由してElasticsearchがProxyされている場合、KibanaのユーザーはさらにElasticsearchの認証が必要になります。
 +
 *alias*: `kibana_elasticsearch_username` deprecated[4.2]
 
-`elasticsearch.pingTimeout` added[4.2]:: This parameter specifies the maximum wait time in milliseconds for ping responses by Elasticsearch.
+`elasticsearch.pingTimeout` added[4.2]:: このパラメータは、ElasticsearchへのPingのレスポンスの最大の待ち時間(ミリ秒)を指定します。
 +
 *alias*: `ping_timeout` deprecated[4.2]
 +
 *default*: `1500`
 
-`elasticsearch.startupTimeout` added[4.2]:: This parameter specifies the maximum wait time in milliseconds for Elasticsearch discovery at Kibana startup. Kibana repeats attempts to discover an Elasticsearch cluster after the specified time elapses.
+`elasticsearch.startupTimeout` added[4.2]:: このパラメータは、Kibanaの開始時にElasticsearchを探す最大待ち時間(ミリ秒)を指定します。
+Kibanaは、指定した時間が経過したあとに、Elasticsearchのクラスタの探索を繰り返し試します。
 +
 *alias*: `startup_timeout` deprecated[4.2]
 +
 *default*: `5000`
 
-`kibana.index` added[4.2]:: The name of the index where saved searched, visualizations, and dashboards will be stored..
+`kibana.index` added[4.2]:: 保存した検索条件、可視化、ダッシュボードが蓄えられるインデックスの名前
 +
 *alias*: `kibana_index` deprecated[4.2]
 +
 *default*: `.kibana`
 
-`kibana.defaultAppId` added[4.2]:: The page that will be displayed when you launch Kibana: `discover`, `visualize`, `dashboard`, or `settings`.
+`kibana.defaultAppId` added[4.2]:: Kibanaを起動した時に表示されるページ: `discover`, `visualize`, `dashboard`, `settings`
 +
 *alias*: `default_app_id` deprecated[4.2]
 +
 *default*: `"discover"`
 
-`logging.silent` added[4.2]:: Set this value to `true` to suppress all logging output.
+`logging.silent` added[4.2]:: この値を `true` にすると、すべてのログ出力を抑制します。
 +
 *default*: `false`
 
-`logging.quiet` added[4.2]:: Set this value to `true` to suppress all logging output except for log messages tagged `error`, `fatal`, or Hapi.js errors.
+`logging.quiet` added[4.2]:: この値を `true` にすると、 `error`, `fatal` のタグが付いているログと Hapi.js のエラー以外のログ出力がすべて抑制されます。
 +
 *default*: `false`
 
-`logging.verbose` added[4.2]:: Set this value to `true` to log all events, including system usage information and all requests.
+`logging.verbose` added[4.2]:: この値を `true` にすると、システムの利用情報とすべてのリクエストを含むすべてのイベントをログ出力します。
 +
 *default*: `false`
 
-`logging.events` added[4.2]:: You can specify a map of log types to output tags for this parameter to create a customized set of loggable events, as in the following example:
+`logging.events` added[4.2]:: このパラメータに、以下の例のようなログタイプごとにタグを指定したマップを設定すると、自由にログが出力されるイベントを指定することができます:
 +
 [source,json]
 {
@@ -378,42 +382,49 @@ deprecated[4.2, いくつかのKibanaサーバのプロパティ名は、Kibana 
   error: '*'
 }
 
-`elasticsearch.requestTimeout` added[4.2]:: How long to wait for responses from the Kibana backend or Elasticsearch, in milliseconds.
+`elasticsearch.requestTimeout` added[4.2]:: KibanaのバックエンドまたはElasticsearchからのレスポンスをどれくらい待つかをミリ秒で指定します。
 +
 *alias*: `request_timeout` deprecated[4.2]
 +
 *default*: `500000`
 
-`elasticsearch.shardTimeout` added[4.2]:: How long Elasticsearch should wait for responses from shards. Set to 0 to disable.
+`elasticsearch.shardTimeout` added[4.2]:: Elasticsearchがシャードからのレスポンスをどれくらい待つか指定します。0を指定すると無効になります。
 +
 *alias*: `shard_timeout` deprecated[4.2]
 +
 *default*: `0`
 
-`elasticsearch.ssl.verify` added[4.2]:: Indicates whether or not to validate the Elasticsearch SSL certificate. Set to false to disable SSL verification.
+`elasticsearch.ssl.verify` added[4.2]:: ElasticsearchのSSL認証の検証をおこなうかどうか指定します。
+falseを指定すると、SSLの検証をおこないません。
 +
 *alias*: `verify_ssl` deprecated[4.2]
 +
 *default*: `true`
 
-`elasticsearch.ssl.ca` added[4.2]:: The path to the CA certificate for your Elasticsearch instance. Specify if you are using a self-signed certificate so the certificate can be verified. Disable `elasticsearch.ssl.verify` otherwise.
+`elasticsearch.ssl.ca` added[4.2]:: Elasticsearchインスタンスのための、認証局が発行した証明書のパスを指定します。
+証明書が検証されるように、自己証明書を使っているのかどうかを指定してください。
+そうでなければ `elasticsearch.ssl.verify` を無効にしてください。
 +
 *alias*: `ca` deprecated[4.2]
 
-`server.ssl.key` added[4.2]:: The path to your Kibana server's key file. Must be set to encrypt communications between the browser and Kibana.
+`server.ssl.key` added[4.2]:: Kibanaサーバの鍵ファイルのパス
+ブラウザとKibanaの間の通信を暗号化するために、設定する必要があります。
 +
 *alias*: `ssl_key_file` deprecated[4.2]
 
-`server.ssl.cert` added[4.2]:: The path to your Kibana server's certificate file. Must be set to encrypt communications between the browser and Kibana.
+`server.ssl.cert` added[4.2]:: Kibanaサーバの証明書のファイルのパス
+ブラウザとKibanaの間の通信を暗号化するために、設定する必要があります。
 +
 *alias*: `ssl_cert_file` deprecated[4.2]
 
-`pid.file` added[4.2]:: The location where you want to store the process ID file.
+`pid.file` added[4.2]:: プロセスIDのファイルを保存したい場所
 +
 *alias*: `pid_file` deprecated[4.2]
 +
 *default*: `/var/run/kibana.pid`
 
-`logging.dest` added[4.2]:: The location where you want to store the Kibana's log output. If not specified, log output is written to standard output and not stored. Specifying a log file suppresses log writes to standard output.
+`logging.dest` added[4.2]:: Kibanaのログ出力を保存したい場所
+もし指定しなかった場合は、ログ出力は標準出力に書き出されて、ファイルには保存されません。
+ログファイルを指定すると、ログを標準出力に書き出すことを抑制します。
 +
 *alias*: `log_file` deprecated[4.2]
