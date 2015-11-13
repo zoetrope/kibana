@@ -93,30 +93,34 @@ NOTE: Elasticsearch 1.4.3 かそれ以降では、この機能を利用するた
 * *Minimum opacity*: 点の透明度の下限を設定します。
 * *Show Tooltip*: チェックすると、点にマウスカーソルを合わせたときに、その点の値をツールチップで表示します。
 
-*Desaturate map tiles*:: Desaturate the map's color in order to make the markers stand out more clearly.
-*WMS compliant map server*:: Check this box to enable the use of a third-party mapping service that complies with the Web Map Service (WMS) standard.
-Specify the following elements:
+*Desaturate map tiles*:: マーカーをより明るく目立たせるために、マップの色の彩度を変更します。
+*WMS compliant map server*:: これをチェックすると、Web Map Service(WMS)の標準に準拠したサードパーティ製のマッピングサービスを利用できるようになります。
+以下の要素を指定してください。
 
-* *WMS url*: The URL for the WMS map service.
-* *WMS layers*: A comma-separated list of the layers to use in this visualization.
-Each map server provides its own list of layers.
-* *WMS version*: The WMS version used by this map service.
-* *WMS format*: The image format used by this map service.
-The two most common formats are `image/png` and `image/jpeg`.
-* *WMS attribution*: An optional, user-defined string that identifies the map source.
-Maps display the attribution string in the lower right corner.
-* *WMS styles*: A comma-separated list of the styles to use in this visualization.
-Each map server provides its own styling options.
+* *WMS url*: WMSマップサービスのURL
+* *WMS layers*: この可視化で利用するレイヤーのカンマ区切りの一覧
+それぞれのマップサーバは、レイヤーの独自の一覧を提供します。
+* *WMS version*: このマップサービスで使われているWMSのバージョン
+* *WMS format*: このマップサービスで使われている画像フォーマット
+もっとも一般的なフォーマットは `image/png` と `image/jpeg` の2つです。
+* *WMS attribution*: マップの提供元を見分けるためのユーザー定義文字列(任意)
+マップの右下隅に属性文字列を表示します。
+* *WMS styles*: この可視化で利用するスタイルのカンマ区切りの一覧
+各マップサーバは、独自のスタイルのオプションを提供します。
 
-After changing options, click the green *Apply changes* button to update your visualization, or the grey *Discard changes* button to keep your visualization in its current state.
+オプションを変更したあと、緑色の *Apply changes* ボタンをクリックすると、可視化を更新することができます。
+また、灰色の *Discard changes* ボタンをクリックすると、現在の可視化の状態をキープします。
 
 [float]
 [[navigating-map]]
 ==== Navigating the Map
-Once your tilemap visualization is ready, you can explore the map in several ways:
+タイルマップの可視化の準備ができたら、いくつかの方法でマップを探索することができます:
 
-* Click and hold anywhere on the map and move the cursor to move the map center.
-Hold Shift and drag a bounding box across the map to zoom in on the selection. 
-* Click the *Zoom In/Out* image:images/viz-zoom.png[] buttons to change the zoom level manually.
+* マップ上のどこかをクリックしたまま、カーソルを動かすと、地図の中心位置を動かすことができます。
+選択された四角形をShiftを押したままドラッグすると、
+Hold Shift and drag a bounding box across the map to zoom in on the selection.
+* *Zoom In/Out* image:images/viz-zoom.png[] ボタンをクリックすると、手動でズームレベルを変更することができます。
+* *Fit Data Bounds* image:images/viz-fit-bounds.png[] ボタンをクリックすると、自動的に
 * Click the *Fit Data Bounds* image:images/viz-fit-bounds.png[] button to automatically crop the map boundaries to the geohash buckets that have at least one result.
+* *Latitude/Longitude Filter* image:images/viz-lat-long-filter.png[] ボタンをクリックすると、
 * Click the *Latitude/Longitude Filter* image:images/viz-lat-long-filter.png[] button, then drag a bounding box across the map, to create a filter for the box coordinates.

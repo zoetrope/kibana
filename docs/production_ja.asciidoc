@@ -10,22 +10,21 @@ How you deploy Kibana largely depends on your use case.
 もし、ユーザーが一人しかいないのであれば、Kibanaをローカルマシーン上で実行し、やりとりしたいElasticsearchのインスタンスの接続先を指すように設定することができます。
 逆に、多くのKibanaヘビーユーザーがいるならば、同じElasticsearchインスタンスに接続した複数のKibanaをロードバランスする必要があるかもしれません。
 
-While Kibana isn't terribly resource intensive, we still recommend running Kibana separate from  your Elasticsearch data or master nodes.
-To distribute Kibana traffic across the nodes in your Elasticsearch cluster, you can run Kibana and an Elasticsearch client node on the same machine.
-For more information, see <<load-balancing, Load Balancing Across Multiple Elasticsearch Nodes>>.
+Kibanaが極端に資源集約されていないのであれば、KibanaをElasticsearchのデータやマスターノードと分離することを推奨します。
+Elasticsearchのクラスタのノード間でKibanaのトラフィックを分散するには、KibanaとElasticsearchのクライアントノードを同じマシン上で実行することができます。
+より詳しい情報は <<load-balancing, Load Balancing Across Multiple Elasticsearch Nodes>> をご覧ください。
 
 [float]
 [[configuring-kibana-shield]]
 === Configuring Kibana to Work with Shield
-If you are using Shield to authenticate Elasticsearch users, you need to provide the Kibana server with credentials so it can access the `.kibana` index and monitor the cluster.
+もしElasticsearchのユーザー認証のためにShieldを使っているのであれば、 `.kibana` インデックスへのアクセスとクラスタの監視を可能にするために、Kibanaサーバを資格情報付きで提供する必要があります。
 
-To configure credentials for the Kibana server:
+Kibanaサーバの資格情報の設定は以下のとおりです:
 
-. Assign the `kibana4_server` role to a user in Shield.
-For more information, see {shield}/kibana.html#kibana4-server-role[Configuring a Role for the Kibana 4 Server] in the Shield documentation.
+. Shieldのユーザーに `kibana4_server` の役割を割り当てます。
+より詳しい情報は、Shieldのドキュメント {shield}/kibana.html#kibana4-server-role[Configuring a Role for the Kibana 4 Server] をご覧ください。
 
- . Set the `kibana_elasticsearch_username` and `kibana_elasticsearch_password` properties in `kibana.yml` to specify the credentials of the user you assigned the `kibana4_server`
-role:
+ . `kibana.yml` の `kibana_elasticsearch_username` と `kibana_elasticsearch_password` プロパティに `kibana4_server` の役割を割り当てたユーザーの資格情報を指定します:
 +
 [source,text]
 ----
@@ -33,17 +32,17 @@ kibana_elasticsearch_username: kibana4-user
 kibana_elasticsearch_password: kibana4-password
 ----
 
-Kibana 4 users also need access to the `.kibana` index so they can save and load searches, visualizations, and dashboards.
-For more information, see {shield}/kibana.html#kibana4-server-role[Configuring Roles for Kibana 4 Users] in the Shield documentation.
+Kibana 4のユーザーが検索条件や可視化やダッシュボードを保存したりロードしたりできるように、 `.kibana` インデックスにもアクセスできる必要があります。
+より詳しい情報はShieldのドキュメント {shield}/kibana.html#kibana4-server-role[Configuring Roles for Kibana 4 Users] をご覧ください。
 
-TIP: See <<kibana-dynamic-mapping, Kibana and Elasticsearch Dynamic Mapping>> for important information on Kibana and the dynamic mapping feature in Elasticsearch.
+TIP: <<kibana-dynamic-mapping, Kibana and Elasticsearch Dynamic Mapping>> には、KibanaとElasticsearchのDynamic Mappingに関する重要な情報があります。
 
 [float]
 [[enabling-ssl]]
 === Enabling SSL
-Kibana supports SSL encryption for both client requests and the requests the Kibana server sends to Elasticsearch.
+Kibanaは、クライアントからのリクエストと、KibanaからElasticsearchへのリクエストの両方で、SSLの暗号化をサポートします。
 
-To encrypt communications between the browser and the Kibana server, you configure the `ssl_key_file `and `ssl_cert_file` properties in `kibana.yml`:
+ブラウザとKibanaサーバの間で通信を暗号化するには、 `kibana.yml` の `ssl_key_file` と `ssl_cert_file` プロパティを設定します。
 
 [source,text]
 ----
@@ -52,17 +51,17 @@ ssl_key_file: /path/to/your/server.key
 ssl_cert_file: /path/to/your/server.crt
 ----
 
-If you are using Shield or a proxy that provides an HTTPS endpoint for Elasticsearch, you can configure Kibana to access Elasticsearch via HTTPS so communications between the Kibana server and Elasticsearch are encrypted.
+もし、Shieldを利用しているか、ElasticsearchにHTTPSのエンドポイントを提供するProxyを使っているならば、KibanaサーバとElasticsearchの間の通信を暗号化するために、HTTPSを介したKibanaからElasticsearchへのアクセスを設定することができます。
 
-To do this, you specify the HTTPS protocol when you configure the Elasticsearch URL in `kibana.yml`:
+これをおこなうためには、 `kibana.yml` でElasticsearchのURLを設定するときに、HTTPSプロトコルを指定します。
 
 [source,text]
 ----
 elasticsearch: "https://<your_elasticsearch_host>.com:9200"
 ----
 
-If you are using a self-signed certificate for Elasticsearch, set the `ca` property in `kibana.yml` to specify the location of the PEM file.
-Setting the `ca` property lets you  leave the `verify_ssl` option enabled.
+Elasticsearchが自己証明書を利用しているならば、PEMファイルの場所を指定するために、`kibana.yml` で `ca` プロパティを設定します。
+`ca` プロパティを設定しても `verify_ssl` オプションは有効のままにしておくことができます。
 
 [source,text]
 ----
@@ -74,26 +73,26 @@ ca: /path/to/your/ca/cacert.pem
 [float]
 [[controlling-access]]
 === Controlling access
-You can use http://www.elastic.co/overview/shield/[Elasticsearch Shield] (Shield) to control what Elasticsearch data users can access through Kibana.
-Shield provides index-level access control.
-If a user isn't authorized to run the query that populates a Kibana visualization, the user just sees an empty visualization.
+Kibanaを通してElasticsearchのデータにアクセスすることのできるユーザを制御するために、 http://www.elastic.co/overview/shield/[Elasticsearch Shield] (Shield)を利用することができます。
+Shieldは、インデックスレベルでのアクセスコントロールを提供します。
+もしユーザーがKibanaの可視化をおこなうためのクエリ実行が認証されない場合、ユーザーはただ空の可視化を見るだけです。
 
-To configure access to Kibana using Shield, you create Shield roles for Kibana using the `kibana4` default role as a starting point.
-For more information, see {shield}/kibana.html#using-kibana4-with-shield[Shield with Kibana 4][Using Shield with Kibana 4].
+Shieldを使ってKibanaのアクセスを設定するには、起点として `kibana4` というデフォルトの役割を利用して、KibanaのためにShieldの役割を作成します。
+より詳しい情報は、 {shield}/kibana.html#using-kibana4-with-shield[Shield with Kibana 4][Using Shield with Kibana 4] をご覧ください。
 
 [float]
 [[load-balancing]]
 === Load Balancing Across Multiple Elasticsearch Nodes
-If you have multiple nodes in your Elasticsearch cluster, the easiest way to distribute Kibana requests across the nodes is to run an Elasticsearch _client_ node on the same machine as Kibana.
-Elasticsearch client nodes are essentially smart load balancers that are part of the cluster.
-They process incoming HTTP requests, redirect operations to the other nodes in the cluster as needed, and gather and return the results.
-For more information, see http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html[Node] in the Elasticsearch reference.
+Elasticsearchのクラスタに複数のノードがあるならば、Kibanaのリクエストをそれらのノードに分配する最も簡単な方法は、Elasticsearchの _クライアント_ ノードをKibanaと同じマシン上で実行することです。
+Elasticsearchの暗いなとノードは、本質的にはクラスタの一部である賢いロードバランサーです。
+それらは、やってきたHTTPリクエストを処理し、必要に応じてクラスタ内の他のノードに処理をリダイレクトし、結果を集めて返します。
+より詳しい情報はElasticsearchのリファレンスの http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html[Node] をご覧ください。
 
-To use a local client node to load balance Kibana requests:
+Kibanaのリクエストをロードバランスするために、ローカルクライアントノードを使うには:
 
-. Install Elasticsearch on the same machine as Kibana.
-. Configure the node as a client node.
-In `elasticsearch.yml`, set both `node.data` and `node.master` to `false`:
+. Kibanaと同じマシンにElasticsearchをインストールします。
+. ノードをクライアントノードに設定します。
+`elasticsearch.yml` の `node.data` と `node.master` の両方を `false` に設定します。
 +
 --------
 # 3. You want this node to be neither master nor data node, but
@@ -103,14 +102,14 @@ In `elasticsearch.yml`, set both `node.data` and `node.master` to `false`:
 node.master: false
 node.data: false
 --------
-. Configure the client node to join your Elasticsearch cluster.
-In `elasticsearch.yml`, set the `cluster.name` to the name of your cluster.
+. クライアントノードをElasticsearchのクラスタに参加させるように設定します。
+`elasticsearch.yml` の `cluster.name` にクラスタ名を設定します。
 +
 --------
 cluster.name: "my_cluster"
 --------
-. Make sure Kibana is configured to point to your local client node.
-In `kibana.yml`, the `elasticsearch_url` should be set to `localhost:9200`.
+. Kibanaが、ローカルのクライアントノードを指すように設定されていることを確認します。
+`kibana.yml` の `elasticsearch_url` が `localhost:9200` に設定されていなければなりません。
 +
 --------
 # The Elasticsearch instance to use for all your queries.
